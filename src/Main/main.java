@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import Services.popController;
+import Services.popService;
 
 /**
  *
@@ -22,7 +22,7 @@ public class main {
      */
     public static void main(String[] args) {
         System.out.println("Start");
-        popController pop = new popController();
+        popService pop = new popService();
         int cantMails = pop.getCantidadEmails();
         System.out.println("Cantidad de mails: " + cantMails);
         try {

@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class smtpController {
+public class smtpService {
     final String servidor = "mail.tecnoweb.org.bo";
     String user_emisor = "grupo06sa@tecnoweb.org.bo";
     String line;
@@ -19,7 +19,7 @@ public class smtpController {
     BufferedReader entrada;
     DataOutputStream salida;
 
-    public smtpController() {
+    public smtpService() {
     }
 
     public void sendEmail(String receptor, String mensaje) {

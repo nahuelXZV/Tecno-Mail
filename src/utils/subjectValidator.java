@@ -1,19 +1,22 @@
-package Services;
+package utils;
 
 import java.util.LinkedList;
 
 import Controllers.pruebaController;
+import Controllers.rolController;
+import Controllers.usuarioController;
+import Services.smtpService;
 
-public class subjectController {
+public class subjectValidator {
 
     private String subject;
     private String emailEmisor;
-    private smtpController smtp;
+    private smtpService smtp;
 
-    public subjectController(String subject, String emailEmisor) {
+    public subjectValidator(String subject, String emailEmisor) {
         this.subject = subject;
         this.emailEmisor = emailEmisor;
-        smtp = new smtpController();
+        smtp = new smtpService();
     }
 
     // LIST-PRUEBA [,,,,,]
@@ -45,63 +48,76 @@ public class subjectController {
                     "No se reconoce el formato indicado. Verifique que exista un espacio entre el comando y los parametros.");
             return;
         }
-        OpcionList();
-    }
-
-    private void OpcionList() {
-        String response = "";
         subject = subject.trim();
-
-        String[] parts = subject.split(" ");
-        if (parts.length != 2) {
+        int firstSpace = subject.indexOf(" ");
+        int parentesis1Aux = subject.indexOf("[");
+        if (firstSpace == -1 || parentesis1Aux == -1) {
             smtp.sendEmail(emailEmisor,
                     "No se reconoce el formato indicado. Verifique que exista un espacio entre el comando y los parametros.");
             return;
         }
-        String[] opcionArray = parts[0].split("-"); // [LIST, PRUEBA]
+        if (parentesis1Aux < firstSpace) {
+            smtp.sendEmail(emailEmisor,
+                    "No se reconoce el formato indicado. Verifique que exista un espacio entre el comando y los parametros.");
+            return;
+        }
+        String command = subject.substring(0, firstSpace);
+
+        String[] opcionArray = command.split("-"); // [LIST, PRUEBA]
         if (opcionArray.length != 2) {
             smtp.sendEmail(emailEmisor,
                     "No se reconoce el formato indicado. Verifique que exista un '-' en el comando.");
             return;
         }
 
-        System.out.println("parts[0]: " + parts[0]); // LIST-PRUEBA
-        System.out.println("parts[1]: " + parts[1]); // [,,,,,]
-        parts[1] = parts[1].replace("[", "");
-        parts[1] = parts[1].replace("]", "");
+        OpcionList();
+    }
+
+    private void OpcionList() {
+        String response = "";
+        int firstSpace = subject.indexOf(" ");
+        String command = subject.substring(0, firstSpace);
+        String params = subject.substring(firstSpace + 1, subject.length());
+        String[] opcionArray = command.split("-"); // [LIST, PRUEBA]
+
+        System.out.println("command: " + command); // LIST-PRUEBA
+        System.out.println("params: " + params); // [,,,,,]
+
+        params = params.replace("[", "");
+        params = params.replace("]", "");
 
         String opcion = opcionArray[1];
         System.out.println("opcionArray[0]: " + opcionArray[0]); // LIST
         System.out.println("opcionArray[1]: " + opcionArray[1]); // PRUEBA
 
         String[] parametros;
-        if (parts[1].length() > 2)
-            parametros = parts[1].split(","); // [, , , , ,]
+        if (params.length() >= 1)
+            parametros = params.split(","); // [, , , , ,]
         else
             parametros = new String[0];
 
         if (opcion.toLowerCase().equals("prueba")) {
             pruebaController prueba = new pruebaController();
-            LinkedList<String> params = prueba.createList(parametros);
+            LinkedList<String> paramsList = prueba.createList(parametros);
             switch (opcionArray[0].toLowerCase()) {
                 case "list":
-                    response = prueba.getAll(params);
+                    response = prueba.getAll(paramsList);
                     smtp.sendEmail(emailEmisor, response);
                     break;
                 case "get":
-                    response = prueba.get(Integer.parseInt(params.get(0)));
+                    response = prueba.get(Integer.parseInt(paramsList.get(0)));
                     smtp.sendEmail(emailEmisor, response);
                     break;
                 case "create":
-                    response = prueba.create(params);
+                    response = prueba.create(paramsList);
                     smtp.sendEmail(emailEmisor, response);
                     break;
                 case "update":
-                    response = prueba.update(params);
+                    response = prueba.update(paramsList);
                     smtp.sendEmail(emailEmisor, response);
                     break;
                 case "delete":
-                    response = prueba.delete(Integer.parseInt(params.get(0)));
+                    response = prueba.delete(Integer.parseInt(paramsList.get(0)));
                     smtp.sendEmail(emailEmisor, response);
                     break;
                 default:
@@ -111,6 +127,71 @@ public class subjectController {
             }
             return;
         }
+
+        if (opcion.toLowerCase().equals("usuario")) {
+            usuarioController usuario = new usuarioController();
+            LinkedList<String> paramsList = usuario.createList(parametros);
+            switch (opcionArray[0].toLowerCase()) {
+                case "list":
+                    response = usuario.getAll(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "get":
+                    response = usuario.get(Integer.parseInt(paramsList.get(0)));
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "create":
+                    response = usuario.create(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "update":
+                    response = usuario.update(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "delete":
+                    response = usuario.delete(Integer.parseInt(paramsList.get(0)));
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                default:
+                    smtp.sendEmail(emailEmisor,
+                            "No se reconoce el formato indicado. Verifique que sea una de estas opciones List, Get, Create, Update, Delete.");
+                    break;
+            }
+            return;
+        }
+
+        if (opcion.toLowerCase().equals("rol")) {
+            rolController rol = new rolController();
+            LinkedList<String> paramsList = rol.createList(parametros);
+            switch (opcionArray[0].toLowerCase()) {
+                case "list":
+                    response = rol.getAll(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "get":
+                    response = rol.get(Integer.parseInt(paramsList.get(0)));
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "create":
+                    response = rol.create(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "update":
+                    response = rol.update(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "delete":
+                    response = rol.delete(Integer.parseInt(paramsList.get(0)));
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                default:
+                    smtp.sendEmail(emailEmisor,
+                            "No se reconoce el formato indicado. Verifique que sea una de estas opciones List, Get, Create, Update, Delete.");
+                    break;
+            }
+            return;
+        }
+
         System.out.println("NO ENTRO ");
         // ....
     }

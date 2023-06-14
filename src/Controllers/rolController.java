@@ -1,34 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Controllers;
 
 import java.util.LinkedList;
 
-import Models.pruebaModel;
+import Models.rolModel;
 import utils.validatorUtils;
 
-/**
- *
- * @author Nahuel
- */
-public class pruebaController {
-    private pruebaModel prueba;
+public class rolController {
+    private rolModel rol;
     private String respuesta;
 
-    public pruebaController() {
-        prueba = new pruebaModel();
+    public rolController() {
+        rol = new rolModel();
     }
 
     public String create(LinkedList<String> params) {
-        this.validate(params);
+        this.validateCreate(params);
         if (this.respuesta != null)
             return this.respuesta;
-        prueba.setId(Integer.parseInt(params.get(0)));
-        prueba.setNombre(params.get(1));
-        if (prueba.create()) {
+        rol = new rolModel(0, params.get(0), params.get(1));
+        if (rol.create()) {
             respuesta = "Creado exitosamente.";
         } else {
             respuesta = "No se pudo crear.";
@@ -37,12 +27,11 @@ public class pruebaController {
     }
 
     public String update(LinkedList<String> params) {
-        validate(params);
+        validateUpdate(params);
         if (this.respuesta != null)
             return this.respuesta;
-        prueba.setId(Integer.parseInt(params.get(0)));
-        prueba.setNombre(params.get(1));
-        if (prueba.update()) {
+        rol = new rolModel(Integer.parseInt(params.get(0)), params.get(1), params.get(2));
+        if (rol.update()) {
             respuesta = "Actualizado exitosamente.";
         } else {
             respuesta = "No se pudo actualizar.";
@@ -53,8 +42,8 @@ public class pruebaController {
     public String delete(int id) {
         if (!validatorUtils.validateNumber(String.valueOf(id)))
             return "El id debe ser un numero";
-        prueba.setId(id);
-        if (prueba.delete()) {
+        rol.setId(id);
+        if (rol.delete()) {
             respuesta = "Eliminado exitosamente.";
         } else {
             respuesta = "No se pudo eliminar.";
@@ -63,31 +52,49 @@ public class pruebaController {
     }
 
     public String getAll(LinkedList<String> params) {
-        return prueba.getAll(params);
+        return rol.getAll(params);
     }
 
     public String get(int id) {
         if (!validatorUtils.validateNumber(String.valueOf(id)))
             return "El id debe ser un numero";
-        prueba.setId(id);
-        return prueba.getOne(id);
+        rol.setId(id);
+        // System.out.println(rol.getOne(id));
+        return rol.getOne(id);
     }
 
-    private void validate(LinkedList<String> params) {
+    private void validateCreate(LinkedList<String> params) {
+        rol = new rolModel();
         if (params.size() != 2) {
             this.respuesta = "La cantidad de parametros es incorrecta";
             return;
         }
-        if (!validatorUtils.validateString(params.get(1))) {
+        if (!validatorUtils.validateString(params.get(0))) {
             this.respuesta = "El nombre no puede ser vacio";
+            return;
+        }
+        if (!validatorUtils.validateString(params.get(1))) {
+            this.respuesta = "La descripcion no puede ser vacio";
+            return;
+        }
+    }
+
+    private void validateUpdate(LinkedList<String> params) {
+        rol = new rolModel();
+        if (params.size() != 3) {
+            this.respuesta = "La cantidad de parametros es incorrecta";
             return;
         }
         if (!validatorUtils.validateNumber(params.get(0))) {
             this.respuesta = "El id debe ser un numero";
             return;
         }
-        if (prueba.exist(Integer.parseInt(params.get(0)))) {
-            this.respuesta = "El id ya existe";
+        if (!validatorUtils.validateString(params.get(1))) {
+            this.respuesta = "El nombre no puede ser vacio";
+            return;
+        }
+        if (!validatorUtils.validateString(params.get(2))) {
+            this.respuesta = "La descripcion no puede ser vacio";
             return;
         }
     }

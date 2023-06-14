@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Models;
 
 import java.sql.Connection;
@@ -15,42 +10,29 @@ import java.util.LinkedList;
 
 import Services.conexionDB;
 
-/**
- *
- * @author Nahuel
- */
-public class pruebaModel {
-
+public class rolModel {
     private int id;
     private String nombre;
+    private String descripcion;
 
     private final conexionDB conexion;
 
-    public pruebaModel() {
+    public rolModel() {
         conexion = new conexionDB();
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
+    public rolModel(int id, String nombre, String descripcion) {
+        conexion = new conexionDB();
         this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
         this.nombre = nombre;
+        this.descripcion = descripcion;
     }
 
     public boolean create() {
-        String sql = "INSERT INTO prueba (id, nombre) VALUES (?, ?)";
+        String sql = "INSERT INTO rol (nombre, descripcion) VALUES (?, ?)";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            ps.setString(2, nombre);
+            ps.setString(1, nombre);
+            ps.setString(2, descripcion);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -60,11 +42,11 @@ public class pruebaModel {
     }
 
     public boolean update() {
-
-        String sql = "UPDATE prueba SET nombre = ? WHERE id = ?";
+        String sql = "UPDATE rol SET nombre = ?, descripcion = ? WHERE id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, nombre);
-            ps.setInt(2, id);
+            ps.setString(2, descripcion);
+            ps.setInt(3, id);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -74,7 +56,7 @@ public class pruebaModel {
     }
 
     public boolean delete() {
-        String sql = "DELETE FROM prueba WHERE id = ?";
+        String sql = "DELETE FROM rol WHERE id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             int rowsAffected = ps.executeUpdate();
@@ -86,7 +68,7 @@ public class pruebaModel {
     }
 
     public boolean exist(int id) {
-        String sql = "SELECT * FROM prueba WHERE id = ?";
+        String sql = "SELECT * FROM rol WHERE id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet resultado = ps.executeQuery()) {
@@ -104,7 +86,7 @@ public class pruebaModel {
         ResultSet resultado = null;
         tabla = "Content-Type: text/html; charset=\"UTF-8\"\n"
                 + "\n"
-                + "<h1>Lista de prueba</h1>"
+                + "<h1>Lista de roles</h1>"
                 + "<table style=\"border-collapse: collapse; width: 100%; border: 1px solid black;\">\n"
                 + "\n"
                 + "  <tr>\n"
@@ -112,14 +94,17 @@ public class pruebaModel {
                 + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">ID</th>\n"
                 + "\n"
                 + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">NOMBRE</th>\n"
+                + "\n"
+                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">DESCRIPCION</th>\n"
                 + "\n";
 
         try {
             String query;
             if (params.size() == 0)
-                query = "SELECT id, nombre FROM prueba";
+                query = "SELECT id, nombre, descripcion FROM rol";
             else
-                query = "SELECT id, nombre FROM prueba WHERE " + params.get(0) + " LIKE '%" + params.get(1) + "%'";
+                query = "SELECT id, nombre, descripcion FROM rol WHERE " + params.get(0) + " LIKE '%" + params.get(1)
+                        + "%'";
 
             Connection con = conexion.connect();
             consulta = con.createStatement();
@@ -152,13 +137,15 @@ public class pruebaModel {
     }
 
     public String getOne(int id) {
-        String sql = "SELECT * FROM prueba WHERE id = ?";
+        System.out.println("ID: " + id);
+        String sql = "SELECT * FROM rol WHERE id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet resultado = ps.executeQuery()) {
                 if (resultado.next()) {
-                    return "ID: " + resultado.getInt("id") + "<br/>"
-                            + "Nombre: " + resultado.getString("nombre");
+                    return "Content-Type: text/html; charset=\"UTF-8\"\n" + "ID: " + resultado.getInt("id") + "<br>"
+                            + "Nombre: " + resultado.getString("nombre") + "<br>"
+                            + "Descripcion: " + resultado.getString("descripcion") + "<br>";
                 } else {
                     return "No se encontró el registro.";
                 }
@@ -169,4 +156,28 @@ public class pruebaModel {
         }
     }
 
+    // Getters y setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
 }

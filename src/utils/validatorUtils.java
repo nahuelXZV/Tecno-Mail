@@ -1,5 +1,7 @@
 package utils;
 
+import java.util.regex.Pattern;
+
 public class validatorUtils {
 
     // funciones estaticas de validacion de parametros
@@ -15,7 +17,10 @@ public class validatorUtils {
     }
 
     public static boolean validateEmail(String email) {
-        return email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
+        String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        System.out.println(email);
+        System.out.println(Pattern.matches(regex, email));
+        return Pattern.matches(regex, email);
     }
 
 }

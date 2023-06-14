@@ -3,9 +3,10 @@ package Services;
 import java.io.*;
 import java.net.*;
 
+import utils.subjectValidator;
 import utils.validatorUtils;
 
-public class popController {
+public class popService {
 
     private final String SERVER = "mail.tecnoweb.org.bo";
     private final String MAILRECEPTOR = "grupo06sa@tecnoweb.org.bo";
@@ -14,7 +15,7 @@ public class popController {
     private String MAILEMISOR = "";
     private final int PUERTO = 110;
 
-    public popController() {
+    public popService() {
     }
 
     public int getCantidadEmails() {
@@ -90,7 +91,7 @@ public class popController {
             socket.close();
 
             if (subject != "" && mailEmisor != "" && validatorUtils.validateEmail(mailEmisor)) {
-                subjectController validatorSubject = new subjectController(subject,
+                subjectValidator validatorSubject = new subjectValidator(subject,
                         mailEmisor);
                 validatorSubject.ValidateSuject();
             }
