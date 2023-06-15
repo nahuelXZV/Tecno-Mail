@@ -8,7 +8,7 @@ package Controllers;
 import java.util.LinkedList;
 
 import Models.pruebaModel;
-import utils.validatorUtils;
+import Utils.validatorUtils;
 
 /**
  *

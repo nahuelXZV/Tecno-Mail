@@ -1,7 +1,14 @@
-package utils;
+package Utils;
 
 import java.util.LinkedList;
 
+import Controllers.calendarioAcademicoController;
+import Controllers.contratoController;
+import Controllers.docenteController;
+import Controllers.estudianteController;
+import Controllers.moduloController;
+import Controllers.programaController;
+import Controllers.prospectoController;
 import Controllers.pruebaController;
 import Controllers.rolController;
 import Controllers.usuarioController;
@@ -182,6 +189,230 @@ public class subjectValidator {
                     break;
                 case "delete":
                     response = rol.delete(Integer.parseInt(paramsList.get(0)));
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                default:
+                    smtp.sendEmail(emailEmisor,
+                            "No se reconoce el formato indicado. Verifique que sea una de estas opciones List, Get, Create, Update, Delete.");
+                    break;
+            }
+            return;
+        }
+
+        if (opcion.toLowerCase().equals("estudiante")) {
+            estudianteController estudiante = new estudianteController();
+            LinkedList<String> paramsList = estudiante.createList(parametros);
+            switch (opcionArray[0].toLowerCase()) {
+                case "list":
+                    response = estudiante.getAll(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "get":
+                    response = estudiante.get(Integer.parseInt(paramsList.get(0)));
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "create":
+                    response = estudiante.create(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "update":
+                    response = estudiante.update(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "delete":
+                    response = estudiante.delete(Integer.parseInt(paramsList.get(0)));
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                default:
+                    smtp.sendEmail(emailEmisor,
+                            "No se reconoce el formato indicado. Verifique que sea una de estas opciones List, Get, Create, Update, Delete.");
+                    break;
+            }
+            return;
+        }
+
+        if (opcion.toLowerCase().equals("prospecto")) {
+            prospectoController prospecto = new prospectoController();
+            LinkedList<String> paramsList = prospecto.createList(parametros);
+            switch (opcionArray[0].toLowerCase()) {
+                case "list":
+                    response = prospecto.getAll(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "get":
+                    response = prospecto.get(Integer.parseInt(paramsList.get(0)));
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "create":
+                    response = prospecto.create(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "update":
+                    response = prospecto.update(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "delete":
+                    response = prospecto.delete(Integer.parseInt(paramsList.get(0)));
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                default:
+                    smtp.sendEmail(emailEmisor,
+                            "No se reconoce el formato indicado. Verifique que sea una de estas opciones List, Get, Create, Update, Delete.");
+                    break;
+            }
+            return;
+        }
+
+        if (opcion.toLowerCase().equals("programa")) {
+            programaController programa = new programaController();
+            LinkedList<String> paramsList = programa.createList(parametros);
+            switch (opcionArray[0].toLowerCase()) {
+                case "list":
+                    response = programa.getAll(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "get":
+                    // response = programa.get(Integer.parseInt(paramsList.get(0)));
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "create":
+                    response = programa.create(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "update":
+                    response = programa.update(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "delete":
+                    response = programa.delete(Integer.parseInt(paramsList.get(0)));
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                default:
+                    smtp.sendEmail(emailEmisor,
+                            "No se reconoce el formato indicado. Verifique que sea una de estas opciones List, Get, Create, Update, Delete.");
+                    break;
+            }
+            return;
+        }
+
+        if (opcion.toLowerCase().equals("modulo")) {
+            moduloController modulo = new moduloController();
+            LinkedList<String> paramsList = modulo.createList(parametros);
+            switch (opcionArray[0].toLowerCase()) {
+                case "list":
+                    response = modulo.getAll(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "get":
+                    // response = modulo.get(Integer.parseInt(paramsList.get(0)));
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "create":
+                    response = modulo.create(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "update":
+                    response = modulo.update(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "delete":
+                    response = modulo.delete(Integer.parseInt(paramsList.get(0)));
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                default:
+                    smtp.sendEmail(emailEmisor,
+                            "No se reconoce el formato indicado. Verifique que sea una de estas opciones List, Get, Create, Update, Delete.");
+                    break;
+            }
+            return;
+        }
+
+        if (opcion.toLowerCase().equals("docente")) {
+            docenteController docente = new docenteController();
+            LinkedList<String> paramsList = docente.createList(parametros);
+            switch (opcionArray[0].toLowerCase()) {
+                case "list":
+                    response = docente.getAll(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "get":
+                    // response = docente.get(Integer.parseInt(paramsList.get(0)));
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "create":
+                    response = docente.create(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "update":
+                    response = docente.update(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "delete":
+                    response = docente.delete(Integer.parseInt(paramsList.get(0)));
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                default:
+                    smtp.sendEmail(emailEmisor,
+                            "No se reconoce el formato indicado. Verifique que sea una de estas opciones List, Get, Create, Update, Delete.");
+                    break;
+            }
+            return;
+        }
+
+        if (opcion.toLowerCase().equals("calendarioAcademico")) {
+            calendarioAcademicoController calendarioAcademico = new calendarioAcademicoController();
+            LinkedList<String> paramsList = calendarioAcademico.createList(parametros);
+            switch (opcionArray[0].toLowerCase()) {
+                case "list":
+                    response = calendarioAcademico.getAll(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "get":
+                    // response = calendarioAcademico.get(Integer.parseInt(paramsList.get(0)));
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "create":
+                    response = calendarioAcademico.create(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "update":
+                    response = calendarioAcademico.update(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "delete":
+                    response = calendarioAcademico.delete(Integer.parseInt(paramsList.get(0)));
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                default:
+                    smtp.sendEmail(emailEmisor,
+                            "No se reconoce el formato indicado. Verifique que sea una de estas opciones List, Get, Create, Update, Delete.");
+                    break;
+            }
+            return;
+        }
+
+        if (opcion.toLowerCase().equals("contrato")) {
+            contratoController contrato = new contratoController();
+            LinkedList<String> paramsList = contrato.createList(parametros);
+            switch (opcionArray[0].toLowerCase()) {
+                case "list":
+                    response = contrato.getAll(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "get":
+                    // response = contrato.get(Integer.parseInt(paramsList.get(0)));
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "create":
+                    response = contrato.create(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "update":
+                    response = contrato.update(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "delete":
+                    response = contrato.delete(Integer.parseInt(paramsList.get(0)));
                     smtp.sendEmail(emailEmisor, response);
                     break;
                 default:

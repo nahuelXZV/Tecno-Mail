@@ -3,8 +3,8 @@ package Services;
 import java.io.*;
 import java.net.*;
 
-import utils.subjectValidator;
-import utils.validatorUtils;
+import Utils.subjectValidator;
+import Utils.validatorUtils;
 
 public class popService {
 

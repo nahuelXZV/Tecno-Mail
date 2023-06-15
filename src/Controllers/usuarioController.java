@@ -3,7 +3,7 @@ package Controllers;
 import java.util.LinkedList;
 
 import Models.usuarioModel;
-import utils.validatorUtils;
+import Utils.validatorUtils;
 
 public class usuarioController {
     private usuarioModel usuario;

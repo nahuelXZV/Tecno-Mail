@@ -3,7 +3,7 @@ package Controllers;
 import java.util.LinkedList;
 
 import Models.rolModel;
-import utils.validatorUtils;
+import Utils.validatorUtils;
 
 public class rolController {
     private rolModel rol;
