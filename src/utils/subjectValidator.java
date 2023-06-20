@@ -359,7 +359,7 @@ public class subjectValidator {
             return;
         }
 
-        if (opcion.toLowerCase().equals("calendarioAcademico")) {
+        if (opcion.toLowerCase().equals("calendario")) {
             calendarioAcademicoController calendarioAcademico = new calendarioAcademicoController();
             LinkedList<String> paramsList = calendarioAcademico.createList(parametros);
             switch (opcionArray[0].toLowerCase()) {
@@ -422,7 +422,7 @@ public class subjectValidator {
             }
             return;
         }
-
+        smtp.sendEmail(emailEmisor, "Comando incorrecto, Verifique que este enviando bien los comandos");
         System.out.println("NO ENTRO ");
         // ....
     }

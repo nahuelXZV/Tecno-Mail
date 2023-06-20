@@ -5,6 +5,8 @@ import java.net.*;
 
 import Utils.subjectValidator;
 import Utils.validatorUtils;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class popService {
 
@@ -124,9 +126,24 @@ public class popService {
     }
 
     public String extractSubjectValue(String inputString) {
+        // int startIndex = inputString.indexOf("Subject:") + "Subject:".length();
+        // int endIndex = inputString.indexOf("\n", startIndex);
+        // return inputString.substring(startIndex, endIndex);
+ 
+        // posicion de Subject
         int startIndex = inputString.indexOf("Subject:") + "Subject:".length();
-        int endIndex = inputString.indexOf("\n", startIndex);
-        return inputString.substring(startIndex, endIndex);
+        // posicion de In-Reply-To
+        int endIndex = inputString.indexOf("In-Reply-To:");
+        // obtener el texto entre Subject y In-Reply-To
+        String subject = inputString.substring(startIndex, endIndex);
+        // eliminar espacios en blanco al inicio y al final
+        subject = subject.trim();
+        // eliminar los \n
+        subject = subject.replace("\n", "");
+        // eliminar los \r
+        subject = subject.replace("\r", "");
+
+        return subject;
     }
 
     public String extractEmailValue(String inputString) {

@@ -168,9 +168,9 @@ public class estudianteModel {
         try {
             String query;
             if (params.size() == 0)
-                query = "SELECT id, honorifico, nombre, apellido, ci, ci_exp, telefono, correo, carrera, universidad, estado, sexo, nacionalidad FROM estudiante";
+                query = "SELECT id, honorifico, nombre, apellido, ci, ci_expedicion, telefono, correo, carrera, universidad, estado, sexo, nacionalidad FROM estudiante";
             else
-                query = "SELECT id, honorifico, nombre, apellido, ci, ci_exp, telefono, correo, carrera, universidad, estado, sexo, nacionalidad F FROM estudiante WHERE "
+                query = "SELECT id, honorifico, nombre, apellido, ci, ci_expedicion, telefono, correo, carrera, universidad, estado, sexo, nacionalidad FROM estudiante WHERE "
                         + params.get(0) + " LIKE '%" + params.get(1) + "%'";
 
             Connection con = conexion.connect();

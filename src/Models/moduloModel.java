@@ -13,6 +13,7 @@ import Services.conexionDB;
 public class moduloModel {
 
     private int id;
+    private String codigo_modulo;
     private String nombre;
     private String sigla;
     private String version;
@@ -29,9 +30,11 @@ public class moduloModel {
         conexion = new conexionDB();
     }
 
-    public moduloModel(int id, String nombre, String sigla, String version, String edicion, String modalidad,
+    public moduloModel(int id, String codigo_modulo, String nombre, String sigla, String version, String edicion,
+            String modalidad,
             String fecha_inicio, String fecha_finalizacion, int programa_id, int docente_id) {
         this.id = id;
+        this.codigo_modulo = codigo_modulo;
         this.nombre = nombre;
         this.sigla = sigla;
         this.version = version;
@@ -46,17 +49,18 @@ public class moduloModel {
 
     // Funciones
     public boolean create() {
-        String sql = "INSERT INTO modulo (nombre, sigla, version, edicion, modalidad, fecha_inicio, fecha_finalizacion, programa_id, docente_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO modulo (codigo_modulo, nombre, sigla, version, edicion, modalidad, fecha_inicio, fecha_finalizacion, programa_id, docente_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, this.nombre);
-            ps.setString(2, this.sigla);
-            ps.setString(3, this.version);
-            ps.setString(4, this.edicion);
-            ps.setString(5, this.modalidad);
-            ps.setString(6, this.fecha_inicio);
-            ps.setString(7, this.fecha_finalizacion);
-            ps.setInt(8, this.programa_id);
-            ps.setInt(9, this.docente_id);
+            ps.setString(1, this.codigo_modulo);
+            ps.setString(2, this.nombre);
+            ps.setString(3, this.sigla);
+            ps.setString(4, this.version);
+            ps.setString(5, this.edicion);
+            ps.setString(6, this.modalidad);
+            ps.setString(7, this.fecha_inicio);
+            ps.setString(8, this.fecha_finalizacion);
+            ps.setInt(9, this.programa_id);
+            ps.setInt(10, this.docente_id);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -66,16 +70,17 @@ public class moduloModel {
     }
 
     public boolean update() {
-        String sql = "UPDATE modulo SET nombre = ?, sigla = ?, version = ?, edicion = ?, modalidad = ?, fecha_inicio = ?, fecha_finalizacion = ? WHERE id = ?";
+        String sql = "UPDATE modulo SET codigo_modulo = ?, nombre = ?, sigla = ?, version = ?, edicion = ?, modalidad = ?, fecha_inicio = ?, fecha_finalizacion = ? WHERE id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, this.nombre);
-            ps.setString(2, this.sigla);
-            ps.setString(3, this.version);
-            ps.setString(4, this.edicion);
-            ps.setString(5, this.modalidad);
-            ps.setString(6, this.fecha_inicio);
-            ps.setString(7, this.fecha_finalizacion);
-            ps.setInt(8, this.id);
+            ps.setString(1, this.codigo_modulo);
+            ps.setString(2, this.nombre);
+            ps.setString(3, this.sigla);
+            ps.setString(4, this.version);
+            ps.setString(5, this.edicion);
+            ps.setString(6, this.modalidad);
+            ps.setString(7, this.fecha_inicio);
+            ps.setString(8, this.fecha_finalizacion);
+            ps.setInt(9, this.id);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -115,12 +120,14 @@ public class moduloModel {
         ResultSet resultado = null;
         tabla = "Content-Type: text/html; charset=\"UTF-8\"\n"
                 + "\n"
-                + "<h1>Lista de usuarios</h1>"
+                + "<h1>Lista de modulos</h1>"
                 + "<table style=\"border-collapse: collapse; width: 100%; border: 1px solid black;\">\n"
                 + "\n"
                 + "  <tr>\n"
                 + "\n"
                 + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">ID</th>\n"
+                + "\n"
+                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">CODIGO MODULO</th>\n"
                 + "\n"
                 + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">NOMBRE</th>\n"
                 + "\n"
@@ -144,9 +151,9 @@ public class moduloModel {
         try {
             String query;
             if (params.size() == 0)
-                query = "SELECT modulo.id, modulo.nombre, modulo.sigla, modulo.version, modulo.edicion, modulo.modalidad, modulo.fecha_inicio, modulo.fecha_finalizacion, programa.nombre as programa, docente.nombre as docente FROM modulo, programa, docente WHERE modulo.programa_id = programa.id AND modulo.docente_id = docente.id";
+                query = "SELECT  modulo.id, modulo.codigo_modulo, modulo.nombre, modulo.sigla, modulo.version, modulo.edicion, modulo.modalidad, modulo.fecha_inicio, modulo.fecha_finalizacion, programa.nombre as programa, docente.nombre as docente FROM modulo, programa, docente WHERE modulo.programa_id = programa.id AND modulo.docente_id = docente.id";
             else
-                query = "SELECT modulo.id, modulo.nombre, modulo.sigla, modulo.version, modulo.edicion, modulo.modalidad, modulo.fecha_inicio, modulo.fecha_finalizacion, programa.nombre as programa, docente.nombre as docente FROM modulo, programa, docente WHERE modulo.programa_id = programa.id AND modulo.docente_id = docente.id AND "
+                query = "SELECT modulo.id, modulo.codigo_modulo, modulo.nombre, modulo.sigla, modulo.version, modulo.edicion, modulo.modalidad, modulo.fecha_inicio, modulo.fecha_finalizacion, programa.nombre as programa, docente.nombre as docente FROM modulo, programa, docente WHERE modulo.programa_id = programa.id AND modulo.docente_id = docente.id AND "
                         + params.get(0) + " LIKE '%" + params.get(1) + "%'";
 
             Connection con = conexion.connect();

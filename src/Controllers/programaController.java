@@ -66,7 +66,7 @@ public class programaController {
     }
 
     private void validateCreate(LinkedList<String> params) {
-        if (params.size() != 13) {
+        if (params.size() != 11) {
             this.respuesta = "Numero de parametros incorrecto.";
             return;
         }
@@ -118,7 +118,7 @@ public class programaController {
     }
 
     private void validateUpdate(LinkedList<String> params) {
-        if (params.size() != 14) {
+        if (params.size() != 12) {
             this.respuesta = "Numero de parametros incorrecto.";
             return;
         }
