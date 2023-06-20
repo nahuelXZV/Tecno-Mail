@@ -10,16 +10,14 @@ public class validatorUtils {
         return id.matches("[0-9]+");
     }
 
-    public static boolean validateString(String name) {
-        if (name.length() == 0)
+    public static boolean validateString(String text) {
+        if (text.length() == 0)
             return false;
         return true;
     }
 
     public static boolean validateEmail(String email) {
         String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-        System.out.println(email);
-        System.out.println(Pattern.matches(regex, email));
         return Pattern.matches(regex, email);
     }
 

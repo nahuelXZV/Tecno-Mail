@@ -37,6 +37,7 @@ public class smtpService {
                 logout();
             }
             disconnect();
+            socket.close();
         } catch (UnknownHostException e) {
             e.printStackTrace();
             System.out.println(" S : No se pudo conectar con el servidor indicado");

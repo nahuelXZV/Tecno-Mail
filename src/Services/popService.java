@@ -5,16 +5,12 @@ import java.net.*;
 
 import Utils.subjectValidator;
 import Utils.validatorUtils;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class popService {
 
     private final String SERVER = "mail.tecnoweb.org.bo";
-    private final String MAILRECEPTOR = "grupo06sa@tecnoweb.org.bo";
     private final String USUARIO = "grupo06sa";
     private final String CONTRASEÑA = "grupo06grupo06";
-    private String MAILEMISOR = "";
     private final int PUERTO = 110;
 
     public popService() {
@@ -129,7 +125,7 @@ public class popService {
         // int startIndex = inputString.indexOf("Subject:") + "Subject:".length();
         // int endIndex = inputString.indexOf("\n", startIndex);
         // return inputString.substring(startIndex, endIndex);
- 
+
         // posicion de Subject
         int startIndex = inputString.indexOf("Subject:") + "Subject:".length();
         // posicion de In-Reply-To
@@ -152,7 +148,6 @@ public class popService {
         String subject = inputString.substring(startIndex, endIndex);
         // Nahuel Zalazar <zalazarnahuel43@gmail.com>
         String[] parts = subject.split("<");
-        String part1 = parts[0]; // 004
         String part2 = parts[1]; // 034556
         part2 = part2.replace(">", "");
         return part2;

@@ -16,8 +16,9 @@ public class calendarioAcademicoController {
 
     public String create(LinkedList<String> params) {
         this.validateCreate(params);
-        if (this.respuesta != null)
+        if (this.respuesta != null) {
             return this.respuesta;
+        }
         calendarioAcademico = new calendarioAcademicoModel(0, params.get(0), params.get(1), params.get(2),
                 params.get(3),
                 params.get(4), params.get(5), params.get(6), params.get(7));
@@ -31,8 +32,9 @@ public class calendarioAcademicoController {
 
     public String update(LinkedList<String> params) {
         this.validateUpdate(params);
-        if (this.respuesta != null)
+        if (this.respuesta != null) {
             return this.respuesta;
+        }
         calendarioAcademico = new calendarioAcademicoModel(Integer.parseInt(params.get(0)), params.get(1),
                 params.get(2), params.get(3), params.get(4), params.get(5), params.get(6), params.get(7),
                 params.get(8));
@@ -64,42 +66,42 @@ public class calendarioAcademicoController {
             return;
         }
 
-        if (validatorUtils.validateString(params.get(0))) {
+        if (!validatorUtils.validateString(params.get(0))) {
             this.respuesta = "El nombre debe ser un string y no debe estar vacio.";
             return;
         }
 
-        if (validatorUtils.validateString(params.get(1))) {
+        if (!validatorUtils.validateString(params.get(1))) {
             this.respuesta = "La fecha de inicio debe ser un string y no debe estar vacio.";
             return;
         }
 
-        if (validatorUtils.validateString(params.get(2))) {
+        if (!validatorUtils.validateString(params.get(2))) {
             this.respuesta = "La fecha de finalizacion debe ser un string y no debe estar vacio.";
             return;
         }
 
-        if (validatorUtils.validateString(params.get(3))) {
+        if (!validatorUtils.validateString(params.get(3))) {
             this.respuesta = "El tipo debe ser un string y no debe estar vacio.";
             return;
         }
 
-        if (validatorUtils.validateString(params.get(4))) {
+        if (!validatorUtils.validateString(params.get(4))) {
             this.respuesta = "El tipo de fecha debe ser un string y no debe estar vacio.";
             return;
         }
 
-        if (validatorUtils.validateString(params.get(5))) {
+        if (!validatorUtils.validateString(params.get(5))) {
             this.respuesta = "El lugar debe ser un string y no debe estar vacio.";
             return;
         }
 
-        if (validatorUtils.validateString(params.get(6))) {
+        if (!validatorUtils.validateString(params.get(6))) {
             this.respuesta = "La hora debe ser un string y no debe estar vacio.";
             return;
         }
 
-        if (validatorUtils.validateString(params.get(7))) {
+        if (!validatorUtils.validateString(params.get(7))) {
             this.respuesta = "El encargado debe ser un string y no debe estar vacio.";
             return;
         }
@@ -111,47 +113,47 @@ public class calendarioAcademicoController {
             return;
         }
 
-        if (validatorUtils.validateNumber(params.get(0))) {
+        if (!validatorUtils.validateNumber(params.get(0))) {
             this.respuesta = "El id debe ser un numero.";
             return;
         }
 
-        if (validatorUtils.validateString(params.get(1))) {
+        if (!validatorUtils.validateString(params.get(1))) {
             this.respuesta = "El nombre debe ser un string y no debe estar vacio.";
             return;
         }
 
-        if (validatorUtils.validateString(params.get(2))) {
+        if (!validatorUtils.validateString(params.get(2))) {
             this.respuesta = "La fecha de inicio debe ser un string y no debe estar vacio.";
             return;
         }
 
-        if (validatorUtils.validateString(params.get(3))) {
+        if (!validatorUtils.validateString(params.get(3))) {
             this.respuesta = "La fecha de finalizacion debe ser un string y no debe estar vacio.";
             return;
         }
 
-        if (validatorUtils.validateString(params.get(4))) {
+        if (!validatorUtils.validateString(params.get(4))) {
             this.respuesta = "El tipo debe ser un string y no debe estar vacio.";
             return;
         }
 
-        if (validatorUtils.validateString(params.get(5))) {
+        if (!validatorUtils.validateString(params.get(5))) {
             this.respuesta = "El tipo de fecha debe ser un string y no debe estar vacio.";
             return;
         }
 
-        if (validatorUtils.validateString(params.get(6))) {
+        if (!validatorUtils.validateString(params.get(6))) {
             this.respuesta = "El lugar debe ser un string y no debe estar vacio.";
             return;
         }
 
-        if (validatorUtils.validateString(params.get(7))) {
+        if (!validatorUtils.validateString(params.get(7))) {
             this.respuesta = "La hora debe ser un string y no debe estar vacio.";
             return;
         }
 
-        if (validatorUtils.validateString(params.get(8))) {
+        if (!validatorUtils.validateString(params.get(8))) {
             this.respuesta = "El encargado debe ser un string y no debe estar vacio.";
             return;
         }
