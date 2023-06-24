@@ -20,7 +20,6 @@ public class main {
         System.out.println("Start");
         popService pop = new popService();
         int cantMails = pop.getCantidadEmails();
-        System.out.println("Cantidad de mails: " + cantMails);
         // try {
         // pop.getMail();
         // } catch (Exception e) {
@@ -28,17 +27,19 @@ public class main {
         // }
         while (true) {
             int newCantsMails = pop.getCantidadEmails();
-            System.out.println("Cantidad de mails: " + newCantsMails);
+            System.out.println("Escuchando EMAILS...");
             if (cantMails != newCantsMails) {
                 cantMails = newCantsMails;
                 try {
+                    System.out.println("********NEW EMAIL*****************");
                     pop.getMail();
+                    System.out.println("*********************************");
                 } catch (Exception e) {
-                    System.out.println("Error al obtener mails");
+                    System.out.println("Error al obtener emails");
                 }
             }
             try {
-                Thread.sleep(6000);
+                Thread.sleep(5000);
             } catch (InterruptedException ex) {
                 // Logger.getLogger(Manage.class.getName()).log(Level.SEVERE, null, ex);
             }

@@ -74,12 +74,12 @@ public class popService {
                 comando = "RETR " + number + "\n";
                 salida.writeBytes(comando);
                 String text = getMultiline(entrada);
-                // System.out.println("Text: " + text);
+                //System.out.println("Text: " + text);
 
                 mailEmisor = extractEmailValue(text);
                 subject = extractSubjectValue(text);
-                System.out.println("MAILEMISOR: " + mailEmisor);
-                System.out.println("Subject: " + subject);
+                System.out.println("EMAIL: " + mailEmisor);
+                System.out.println("COMANDO: " + subject);
 
                 comando = "QUIT\r\n";
                 salida.writeBytes(comando);
@@ -92,6 +92,7 @@ public class popService {
                 subjectValidator validatorSubject = new subjectValidator(subject,
                         mailEmisor);
                 validatorSubject.ValidateSuject();
+
             }
 
         } catch (UnknownHostException e) {
@@ -122,16 +123,17 @@ public class popService {
     }
 
     public String extractSubjectValue(String inputString) {
-        // int startIndex = inputString.indexOf("Subject:") + "Subject:".length();
-        // int endIndex = inputString.indexOf("\n", startIndex);
-        // return inputString.substring(startIndex, endIndex);
-
         // posicion de Subject
         int startIndex = inputString.indexOf("Subject:") + "Subject:".length();
-        // posicion de In-Reply-To
-        int endIndex = inputString.indexOf("In-Reply-To:");
+        // posicion de In-Reply-To or To
+        int endIndex = inputString.indexOf("To:");
+        if (endIndex == -1 || endIndex < startIndex) {
+            endIndex = inputString.indexOf("In-Reply-To:");
+        }
+
         // obtener el texto entre Subject y In-Reply-To
         String subject = inputString.substring(startIndex, endIndex);
+
         // eliminar espacios en blanco al inicio y al final
         subject = subject.trim();
         // eliminar los \n
@@ -150,6 +152,7 @@ public class popService {
         String[] parts = subject.split("<");
         String part2 = parts[1]; // 034556
         part2 = part2.replace(">", "");
+        part2 = part2.trim();
         return part2;
     }
 

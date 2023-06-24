@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import Services.conexionDB;
 
 public class estudianteNotaModel {
+
     private int id;
     private String nota;
     private String detalles;
@@ -84,9 +85,7 @@ public class estudianteNotaModel {
         String tabla = "";
         Statement consulta;
         ResultSet resultado = null;
-        tabla = "Content-Type: text/html; charset=\"UTF-8\"\n"
-                + "\n"
-                + "<h1>Lista de notas</h1>"
+        tabla = "<h1>Lista de notas</h1>"
                 + "<table style=\"border-collapse: collapse; width: 100%; border: 1px solid black;\">\n"
                 + "\n"
                 + "  <tr>\n"
@@ -104,11 +103,12 @@ public class estudianteNotaModel {
                 + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">DETALLES</th>\n";
         try {
             String query;
-            if (params.size() == 0)
+            if (params.size() == 0) {
                 query = "SELECT estudiante_nota.id, CONCAT(estudiante.nombre, ' ', estudiante.apellido) AS estudiante, programa.nombre AS programa, modulo.nombre AS modulo, estudiante_nota.nota, estudiante_nota.detalles FROM estudiante_nota INNER JOIN estudiante ON estudiante_nota.estudiante_id = estudiante.id INNER JOIN programa ON estudiante_nota.programa_id = programa.id INNER JOIN modulo ON estudiante_nota.modulo_id = modulo.id";
-            else
+            } else {
                 query = "SELECT estudiante_nota.id, CONCAT(estudiante.nombre, ' ', estudiante.apellido) AS estudiante, programa.nombre AS programa, modulo.nombre AS modulo, estudiante_nota.nota, estudiante_nota.detalles FROM estudiante_nota INNER JOIN estudiante ON estudiante_nota.estudiante_id = estudiante.id INNER JOIN programa ON estudiante_nota.programa_id = programa.id INNER JOIN modulo ON estudiante_nota.modulo_id = modulo.id AND"
                         + params.get(0) + " LIKE '%" + params.get(1) + "%'";
+            }
 
             Connection con = conexion.connect();
             consulta = con.createStatement();

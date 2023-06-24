@@ -123,9 +123,7 @@ public class programaModel {
         String tabla = "";
         Statement consulta;
         ResultSet resultado = null;
-        tabla = "Content-Type: text/html; charset=\"UTF-8\"\n"
-                + "\n"
-                + "<h1>Lista de programas</h1>"
+        tabla = "<h1>Lista de programas</h1>"
                 + "<table style=\"border-collapse: collapse; width: 100%; border: 1px solid black;\">\n"
                 + "\n"
                 + "  <tr>\n"
@@ -157,11 +155,12 @@ public class programaModel {
 
         try {
             String query;
-            if (params.size() == 0)
+            if (params.size() == 0) {
                 query = "SELECT id, codigo_programa, nombre, sigla, edicion, version, fecha_inicio, fecha_finalizacion, costo, tipo, modalidad, hrs_academicas FROM programa";
-            else
+            } else {
                 query = "SELECT id, codigo_programa, nombre, sigla, edicion, version, fecha_inicio, fecha_finalizacion, costo, tipo, modalidad, hrs_academicas FROM programa WHERE "
                         + params.get(0) + " LIKE '%" + params.get(1) + "%'";
+            }
 
             Connection con = conexion.connect();
             consulta = con.createStatement();
@@ -193,26 +192,77 @@ public class programaModel {
         return tabla;
     }
 
-    public String getOne(int id) {
-        String sql = "SELECT * FROM programa WHERE id = ?";
-        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            try (ResultSet resultado = ps.executeQuery()) {
-                if (resultado.next()) {
-                    return "ID: " + resultado.getInt("id") + "<br>"
-                            + "Nombre: " + resultado.getString("nombre") + "<br>"
-                            + "Correo: " + resultado.getString("correo") + "<br>"
-                            + "Contraseña: " + resultado.getString("contraseña") + "<br>"
-                            + "Area: " + resultado.getString("area") + "<br>"
-                            + "Rol: " + resultado.getString("rol_id") + "<br>";
-                } else {
-                    return "No se encontró el registro.";
-                }
+    public String getOferta(LinkedList<String> params) {
+        String tabla = "";
+        Statement consulta;
+        ResultSet resultado = null;
+        tabla = "<h1>Lista de programas</h1>"
+                + "<table style=\"border-collapse: collapse; width: 100%; border: 1px solid black;\">\n"
+                + "\n"
+                + "  <tr>\n"
+                + "\n"
+                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">ID</th>\n"
+                + "\n"
+                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">CODIGO PROGRAMA</th>\n"
+                + "\n"
+                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">NOMBRE</th>\n"
+                + "\n"
+                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">SIGLA</th>\n"
+                + "\n"
+                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">EDICION</th>\n"
+                + "\n"
+                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">VERSION</th>\n"
+                + "\n"
+                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">INICIO</th>\n"
+                + "\n"
+                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">FINALIZACION</th>\n"
+                + "\n"
+                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">COSTO</th>\n"
+                + "\n"
+                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">TIPO</th>\n"
+                + "\n"
+                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">MODALIDAD</th>\n"
+                + "\n"
+                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">HRS ACADEMICAS</th>\n"
+                + "\n";
+
+        try {
+            String query;
+            if (params.size() == 0) {
+                query = "SELECT id, codigo_programa, nombre, sigla, edicion, version, fecha_inicio, fecha_finalizacion, costo, tipo, modalidad, hrs_academicas FROM programa WHERE fecha_finalizacion::date >= CURRENT_DATE";
+            } else {
+                query = "SELECT id, codigo_programa, nombre, sigla, edicion, version, fecha_inicio, fecha_finalizacion, costo, tipo, modalidad, hrs_academicas FROM programa WHERE fecha_finalizacion::date >= CURRENT_DATE AND "
+                        + params.get(0) + " LIKE '%" + params.get(1) + "%'";
             }
+
+            Connection con = conexion.connect();
+            consulta = con.createStatement();
+            resultado = consulta.executeQuery(query);
+            ResultSetMetaData rsmd = resultado.getMetaData();
+            int cantidadColumnas = rsmd.getColumnCount();
+            while (resultado.next()) {
+                tabla = tabla
+                        + "  <tr>\n"
+                        + "\n";
+                for (int i = 0; i < cantidadColumnas; i++) {
+                    tabla = tabla
+                            + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">"
+                            + resultado.getString(i + 1) + "</td>\n"
+                            + "\n";
+                }
+                tabla = tabla
+                        + "  </tr>\n"
+                        + "\n";
+            }
+            tabla = tabla
+                    + "\n"
+                    + "</table>";
+            consulta.close();
+            con.close();
         } catch (SQLException e) {
-            e.printStackTrace();
-            return "No se encontró el registro.";
+            tabla = "No se pudieron listar los datos.";
         }
+        return tabla;
     }
 
     // Getters and Setters

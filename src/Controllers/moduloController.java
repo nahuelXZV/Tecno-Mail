@@ -9,15 +9,20 @@ public class moduloController {
 
     private moduloModel modulo;
     private String respuesta;
+    private docenteController docente;
+    private programaController programa;
 
     public moduloController() {
         modulo = new moduloModel();
+        docente = new docenteController();
+        programa = new programaController();
     }
 
     public String create(LinkedList<String> params) {
         this.validateCreate(params);
-        if (this.respuesta != null)
+        if (this.respuesta != null) {
             return this.respuesta;
+        }
         modulo = new moduloModel(0,
                 params.get(0), params.get(1), params.get(2), params.get(3), params.get(4), params.get(5), params.get(6),
                 params.get(7), Integer.parseInt(params.get(8)), Integer.parseInt(params.get(9)));
@@ -31,8 +36,9 @@ public class moduloController {
 
     public String update(LinkedList<String> params) {
         validateUpdate(params);
-        if (this.respuesta != null)
+        if (this.respuesta != null) {
             return this.respuesta;
+        }
         modulo = new moduloModel(Integer.parseInt(params.get(0)), params.get(1), params.get(2), params.get(3),
                 params.get(4), params.get(5), params.get(6), params.get(7), params.get(8),
                 Integer.parseInt(params.get(9)),
@@ -59,9 +65,9 @@ public class moduloController {
         return modulo.getAll(params);
     }
 
-    // public String get(int id) {
-    // return modulo.getOne(id);
-    // }
+    public boolean exist(int id) {
+        return modulo.exist(id);
+    }
 
     private void validateCreate(LinkedList<String> params) {
         if (params.size() != 10) {
@@ -103,14 +109,20 @@ public class moduloController {
             return;
         }
         if (!validatorUtils.validateNumber(params.get(8))) {
-            this.respuesta = "El ID programa debe ser un numero.";
+            this.respuesta = "El ID del programa debe ser un numero.";
+            return;
+        }
+        if (!programa.exist(Integer.parseInt(params.get(8)))) {
+            this.respuesta = "EL ID del programa no existe.";
             return;
         }
         if (!validatorUtils.validateNumber(params.get(9))) {
-            this.respuesta = "El ID docente debe ser un numero.";
+            this.respuesta = "El ID del docente debe ser un numero.";
             return;
         }
-
+        if (!docente.exist(Integer.parseInt(params.get(9)))) {
+            this.respuesta = "EL ID del docente no existe.";
+        }
     }
 
     private void validateUpdate(LinkedList<String> params) {
@@ -160,9 +172,16 @@ public class moduloController {
             this.respuesta = "El ID programa debe ser un numero.";
             return;
         }
-        if (!validatorUtils.validateNumber(params.get(10))) {
-            this.respuesta = "El ID docente debe ser un numero.";
+        if (!programa.exist(Integer.parseInt(params.get(9)))) {
+            this.respuesta = "EL ID del programa no existe.";
             return;
+        }
+        if (!validatorUtils.validateNumber(params.get(10))) {
+            this.respuesta = "El ID del docente debe ser un numero.";
+            return;
+        }
+        if (!docente.exist(Integer.parseInt(params.get(10)))) {
+            this.respuesta = "EL ID del docente no existe.";
         }
     }
 

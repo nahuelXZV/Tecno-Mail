@@ -6,6 +6,7 @@ import Models.procesoModuloModel;
 import Utils.validatorUtils;
 
 public class procesoModuloController {
+
     private procesoModuloModel procesoModulo;
     private String respuesta;
 
@@ -15,8 +16,9 @@ public class procesoModuloController {
 
     public String create(LinkedList<String> params) {
         this.validateCreate(params);
-        if (this.respuesta != null)
+        if (this.respuesta != null) {
             return this.respuesta;
+        }
         procesoModulo = new procesoModuloModel(0, params.get(0), params.get(1));
         if (procesoModulo.create()) {
             respuesta = "Creado exitosamente.";
@@ -28,8 +30,9 @@ public class procesoModuloController {
 
     public String update(LinkedList<String> params) {
         validateUpdate(params);
-        if (this.respuesta != null)
+        if (this.respuesta != null) {
             return this.respuesta;
+        }
         procesoModulo = new procesoModuloModel(Integer.parseInt(params.get(0)), params.get(1), params.get(2));
         if (procesoModulo.update()) {
             respuesta = "Actualizado exitosamente.";
@@ -40,8 +43,9 @@ public class procesoModuloController {
     }
 
     public String delete(int id) {
-        if (!validatorUtils.validateNumber(String.valueOf(id)))
+        if (!validatorUtils.validateNumber(String.valueOf(id))) {
             return "El id debe ser un numero";
+        }
         procesoModulo.setId(id);
         if (procesoModulo.delete()) {
             respuesta = "Eliminado exitosamente.";
@@ -53,6 +57,10 @@ public class procesoModuloController {
 
     public String getAll(LinkedList<String> params) {
         return procesoModulo.getAll(params);
+    }
+
+    public boolean exist(int id) {
+        return procesoModulo.exist(id);
     }
 
     private void validateCreate(LinkedList<String> params) {

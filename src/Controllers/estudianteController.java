@@ -6,6 +6,7 @@ import Models.estudianteModel;
 import Utils.validatorUtils;
 
 public class estudianteController {
+
     private estudianteModel estudiante;
     private String respuesta;
 
@@ -15,8 +16,9 @@ public class estudianteController {
 
     public String create(LinkedList<String> params) {
         this.validateCreate(params);
-        if (this.respuesta != null)
+        if (this.respuesta != null) {
             return this.respuesta;
+        }
         estudiante = new estudianteModel(0, params.get(0), params.get(1), params.get(2), params.get(3),
                 params.get(4), params.get(5), params.get(6), params.get(7), params.get(8), params.get(9),
                 params.get(10), params.get(11), params.get(12));
@@ -30,8 +32,9 @@ public class estudianteController {
 
     public String update(LinkedList<String> params) {
         validateUpdate(params);
-        if (this.respuesta != null)
+        if (this.respuesta != null) {
             return this.respuesta;
+        }
         estudiante = new estudianteModel(Integer.parseInt(params.get(0)), params.get(1), params.get(2), params.get(3),
                 params.get(4), params.get(5), params.get(6), params.get(7), params.get(8), params.get(9),
                 params.get(10), params.get(11), params.get(12), params.get(13));
@@ -57,8 +60,8 @@ public class estudianteController {
         return estudiante.getAll(params);
     }
 
-    public String get(int id) {
-        return estudiante.getOne(id);
+    public boolean exist(int id) {
+        return estudiante.exist(id);
     }
 
     private void validateCreate(LinkedList<String> params) {

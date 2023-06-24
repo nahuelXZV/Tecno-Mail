@@ -6,81 +6,70 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Properties;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.NoSuchProviderException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 public class smtpService {
-    final String servidor = "mail.tecnoweb.org.bo";
-    String user_emisor = "grupo06sa@tecnoweb.org.bo";
-    String line;
-    String comando = "";
-    String receptor = "";
-    String mensaje = "";
-    int puerto = 25;
-    private Socket socket;
-    BufferedReader entrada;
-    DataOutputStream salida;
+
+    private final static String PORT_SMTP = "465";
+    private final static String PROTOCOL = "smtp";
+    private final static String HOST = "smtp.googlemail.com";
+    private final static String USER = "zalazarnahuel43@gmail.com";
+    private final static String MAIL = "zalazarnahuel43@gmail.com";
+    private final static String MAIL_PASSWORD = "iyesedxnlxmzbrfz";
 
     public smtpService() {
     }
 
     public void sendEmail(String receptor, String mensaje) {
-        try {
-            this.receptor = receptor;
-            this.mensaje = mensaje;
-            socket = new Socket(servidor, puerto);
-            Socket socket = new Socket(servidor, puerto);
-            entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            salida = new DataOutputStream(socket.getOutputStream());
-            if (socket != null && entrada != null && salida != null) {
-                System.out.println(" S : Conectado al servidor");
-                login();
-                send();
-                logout();
+        Properties properties = new Properties();
+        properties.put("mail.transport.protocol", PROTOCOL);
+        properties.setProperty("mail.smtp.host", HOST);
+        properties.setProperty("mail.smtp.port", PORT_SMTP);
+        //properties.setProperty("mail.smtp.tls.enable", "true");//cuando user tecnoweb
+        properties.setProperty("mail.smtp.ssl.enable", "true");//cuando usen Gmail
+        properties.setProperty("mail.smtp.auth", "true");
+
+        Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(USER, MAIL_PASSWORD);
             }
-            disconnect();
-            socket.close();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-            System.out.println(" S : No se pudo conectar con el servidor indicado");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        });
 
-    }
-
-    private void disconnect() {
         try {
-            salida.close();
-            entrada.close();
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(MAIL));
+
+            InternetAddress[] toAddresses = {new InternetAddress(receptor)};
+
+            message.setRecipients(MimeMessage.RecipientType.TO, toAddresses);
+            message.setSubject("Escuela de Ingenieria");
+
+            Multipart multipart = new MimeMultipart("alternative");
+            MimeBodyPart htmlPart = new MimeBodyPart();
+
+            htmlPart.setContent(mensaje, "text/html; charset=utf-8");
+            multipart.addBodyPart(htmlPart);
+            message.setContent(multipart);
+            message.saveChanges();
+
+            Transport.send(message);
+            System.out.println("EMAIL SEND");
+        } catch (NoSuchProviderException | AddressException ex) {
+            System.out.println("Error 1" + ex);
+        } catch (MessagingException ex) {
+            System.out.println("Error 2" + ex);
         }
     }
 
-    private void login() throws IOException {
-        comando = "EHLO " + servidor + "\r\n";
-        salida.writeBytes(comando);
-    }
-
-    private void send() throws IOException {
-        comando = "MAIL FROM :" + user_emisor + "\r\n";
-        salida.writeBytes(comando);
-
-        comando = "RCPT TO :" + receptor + "\r\n";
-        salida.writeBytes(comando);
-
-        comando = "DATA\r\n";
-        salida.writeBytes(comando);
-
-        comando = "SUBJECT :" + "Respuesta" + "\r\n";
-        comando += mensaje + "\r\n";
-        comando += ".\r\n";
-        salida.writeBytes(comando);
-        System.out.println(" S : " + entrada.readLine());
-    }
-
-    private void logout() throws IOException {
-        comando = "QUIT\r\n";
-        salida.writeBytes(comando);
-    }
 }

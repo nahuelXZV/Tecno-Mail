@@ -84,9 +84,7 @@ public class rolModel {
         String tabla = "";
         Statement consulta;
         ResultSet resultado = null;
-        tabla = "Content-Type: text/html; charset=\"UTF-8\"\n"
-                + "\n"
-                + "<h1>Lista de roles</h1>"
+        tabla = "<h1>Lista de roles</h1>"
                 + "<table style=\"border-collapse: collapse; width: 100%; border: 1px solid black;\">\n"
                 + "\n"
                 + "  <tr>\n"
@@ -134,26 +132,6 @@ public class rolModel {
             tabla = "No se pudieron listar los datos.";
         }
         return tabla;
-    }
-
-    public String getOne(int id) {
-        System.out.println("ID: " + id);
-        String sql = "SELECT * FROM rol WHERE id = ?";
-        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            try (ResultSet resultado = ps.executeQuery()) {
-                if (resultado.next()) {
-                    return "Content-Type: text/html; charset=\"UTF-8\"\n" + "ID: " + resultado.getInt("id") + "<br>"
-                            + "Nombre: " + resultado.getString("nombre") + "<br>"
-                            + "Descripcion: " + resultado.getString("descripcion") + "<br>";
-                } else {
-                    return "No se encontró el registro.";
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return "No se encontró el registro.";
-        }
     }
 
     // Getters y setters

@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import Services.conexionDB;
 
 public class estudianteProgramaModel {
+
     private int id;
     private String fecha_inscripcion;
     private int estudiante_id;
@@ -75,9 +76,7 @@ public class estudianteProgramaModel {
         String tabla = "";
         Statement consulta;
         ResultSet resultado = null;
-        tabla = "Content-Type: text/html; charset=\"UTF-8\"\n"
-                + "\n"
-                + "<h1>Lista de estudiantes inscritos en programas</h1>"
+        tabla = "<h1>Lista de estudiantes inscritos en programas</h1>"
                 + "<table style=\"border-collapse: collapse; width: 100%; border: 1px solid black;\">\n"
                 + "\n"
                 + "  <tr>\n"
@@ -92,11 +91,12 @@ public class estudianteProgramaModel {
                 + "\n";
         try {
             String query;
-            if (params.size() == 0)
+            if (params.size() == 0) {
                 query = "SELECT estudiante_programa.id, estudiante.nombre, programa.nombre, estudiante_programa.fecha_inscripcion FROM estudiante_programa INNER JOIN estudiante ON estudiante_programa.estudiante_id = estudiante.id INNER JOIN programa ON estudiante_programa.programa_id = programa.id";
-            else
+            } else {
                 query = "SELECT estudiante_programa.id, estudiante.nombre, programa.nombre, estudiante_programa.fecha_inscripcion FROM estudiante_programa INNER JOIN estudiante ON estudiante_programa.estudiante_id = estudiante.id INNER JOIN programa ON estudiante_programa.programa_id = programa.id AND "
                         + params.get(0) + " LIKE '%" + params.get(1) + "%'";
+            }
 
             Connection con = conexion.connect();
             consulta = con.createStatement();

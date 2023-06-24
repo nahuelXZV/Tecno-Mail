@@ -6,17 +6,25 @@ import Models.estudianteNotaModel;
 import Utils.validatorUtils;
 
 public class estudianteNotaController {
+
     private estudianteNotaModel nota;
     private String respuesta;
+    private moduloController modulo;
+    private programaController programa;
+    private estudianteController estudiante;
 
     public estudianteNotaController() {
         nota = new estudianteNotaModel();
+        modulo = new moduloController();
+        programa = new programaController();
+        estudiante = new estudianteController();
     }
 
     public String create(LinkedList<String> params) {
         this.validateCreate(params);
-        if (this.respuesta != null)
+        if (this.respuesta != null) {
             return this.respuesta;
+        }
         nota = new estudianteNotaModel(0, params.get(0), params.get(1), Integer.parseInt(params.get(2)),
                 Integer.parseInt(params.get(3)), Integer.parseInt(params.get(4)));
         if (nota.create()) {
@@ -29,8 +37,9 @@ public class estudianteNotaController {
 
     public String update(LinkedList<String> params) {
         validateUpdate(params);
-        if (this.respuesta != null)
+        if (this.respuesta != null) {
             return this.respuesta;
+        }
         nota = new estudianteNotaModel(Integer.parseInt(params.get(0)), params.get(1), params.get(2),
                 Integer.parseInt(params.get(3)),
                 Integer.parseInt(params.get(4)), Integer.parseInt(params.get(5)));
@@ -43,8 +52,9 @@ public class estudianteNotaController {
     }
 
     public String delete(int id) {
-        if (!validatorUtils.validateNumber(String.valueOf(id)))
+        if (!validatorUtils.validateNumber(String.valueOf(id))) {
             return "El id debe ser un numero";
+        }
         nota.setId(id);
         if (nota.delete()) {
             respuesta = "Eliminado exitosamente.";
@@ -72,16 +82,27 @@ public class estudianteNotaController {
             return;
         }
         if (!validatorUtils.validateNumber(params.get(2))) {
-            this.respuesta = "El estudiante_id debe ser un numero";
+            this.respuesta = "El ID del estudiante debe ser un numero.";
+            return;
+        }
+        if (!estudiante.exist(Integer.parseInt(params.get(2)))) {
+            this.respuesta = "El ID del estudiante no existe.";
             return;
         }
         if (!validatorUtils.validateNumber(params.get(3))) {
-            this.respuesta = "El programa_id debe ser un numero";
+            this.respuesta = "El ID del programa debe ser un numero.";
+            return;
+        }
+        if (!programa.exist(Integer.parseInt(params.get(3)))) {
+            this.respuesta = "El ID del programa no existe.";
             return;
         }
         if (!validatorUtils.validateNumber(params.get(4))) {
-            this.respuesta = "El modulo_id debe ser un numero";
+            this.respuesta = "El ID del modulo debe ser un numero.";
             return;
+        }
+        if (!modulo.exist(Integer.parseInt(params.get(4)))) {
+            this.respuesta = "El ID del modulo no existe.";
         }
     }
 
@@ -103,16 +124,27 @@ public class estudianteNotaController {
             return;
         }
         if (!validatorUtils.validateNumber(params.get(3))) {
-            this.respuesta = "El estudiante_id debe ser un numero";
+            this.respuesta = "El ID del estudiante debe ser un numero.";
+            return;
+        }
+        if (!estudiante.exist(Integer.parseInt(params.get(3)))) {
+            this.respuesta = "El ID del estudiante no existe.";
             return;
         }
         if (!validatorUtils.validateNumber(params.get(4))) {
-            this.respuesta = "El programa_id debe ser un numero";
+            this.respuesta = "El ID del programa debe ser un numero.";
+            return;
+        }
+        if (!programa.exist(Integer.parseInt(params.get(4)))) {
+            this.respuesta = "El ID del programa no existe.";
             return;
         }
         if (!validatorUtils.validateNumber(params.get(5))) {
-            this.respuesta = "El modulo_id debe ser un numero";
+            this.respuesta = "El ID del modulo debe ser un numero.";
             return;
+        }
+        if (!modulo.exist(Integer.parseInt(params.get(5)))) {
+            this.respuesta = "El ID del modulo no existe.";
         }
     }
 

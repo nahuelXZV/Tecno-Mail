@@ -72,9 +72,7 @@ public class procesoModuloModel {
         String tabla = "";
         Statement consulta;
         ResultSet resultado = null;
-        tabla = "Content-Type: text/html; charset=\"UTF-8\"\n"
-                + "\n"
-                + "<h1>Lista de procesos</h1>"
+        tabla = "<h1>Lista de procesos</h1>"
                 + "<table style=\"border-collapse: collapse; width: 100%; border: 1px solid black;\">\n"
                 + "\n"
                 + "  <tr>\n"
@@ -122,6 +120,19 @@ public class procesoModuloModel {
             tabla = "No se pudieron listar los datos.";
         }
         return tabla;
+    }
+
+    public boolean exist(int id) {
+        String sql = "SELECT * FROM proceso_modulo WHERE id = ?";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet resultado = ps.executeQuery()) {
+                return resultado.next(); // Devuelve true si hay un registro, false si no
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     // Getters y setters

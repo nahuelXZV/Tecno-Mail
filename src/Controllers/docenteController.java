@@ -6,6 +6,7 @@ import Models.docenteModel;
 import Utils.validatorUtils;
 
 public class docenteController {
+
     private docenteModel docente;
     private String respuesta;
 
@@ -15,8 +16,9 @@ public class docenteController {
 
     public String create(LinkedList<String> params) {
         this.validateCreate(params);
-        if (this.respuesta != null)
+        if (this.respuesta != null) {
             return this.respuesta;
+        }
         docente = new docenteModel(0, params.get(0), params.get(1), params.get(2), params.get(3),
                 params.get(4), params.get(5), params.get(6), params.get(7));
         if (docente.create()) {
@@ -29,8 +31,9 @@ public class docenteController {
 
     public String update(LinkedList<String> params) {
         this.validateUpdate(params);
-        if (this.respuesta != null)
+        if (this.respuesta != null) {
             return this.respuesta;
+        }
         docente = new docenteModel(Integer.parseInt(params.get(0)), params.get(1), params.get(2), params.get(3),
                 params.get(4), params.get(5), params.get(6), params.get(7), params.get(8));
         if (docente.update()) {
@@ -55,9 +58,9 @@ public class docenteController {
         return docente.getAll(params);
     }
 
-    // public String get(int id) {
-    // return docente.get(id);
-    // }
+    public boolean exist(int id) {
+        return docente.exist(id);
+    }
 
     private void validateCreate(LinkedList<String> params) {
         if (params.size() != 8) {

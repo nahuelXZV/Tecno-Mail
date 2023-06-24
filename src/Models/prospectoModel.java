@@ -106,9 +106,7 @@ public class prospectoModel {
         String tabla = "";
         Statement consulta;
         ResultSet resultado = null;
-        tabla = "Content-Type: text/html; charset=\"UTF-8\"\n"
-                + "\n"
-                + "<h1>Lista de prospectos</h1>"
+        tabla = "<h1>Lista de prospectos</h1>"
                 + "<table style=\"border-collapse: collapse; width: 100%; border: 1px solid black;\">\n"
                 + "\n"
                 + "  <tr>\n"
@@ -132,11 +130,12 @@ public class prospectoModel {
 
         try {
             String query;
-            if (params.size() == 0)
+            if (params.size() == 0) {
                 query = "SELECT id, nombre, telefono, correo, interes, carrera, estado, detalles FROM prospecto";
-            else
+            } else {
                 query = "SELECT id, nombre, telefono, correo, interes, carrera, estado, detalles FROM prospecto WHERE "
                         + params.get(0) + " LIKE '%" + params.get(1) + "%'";
+            }
 
             Connection con = conexion.connect();
             consulta = con.createStatement();
@@ -166,28 +165,6 @@ public class prospectoModel {
             tabla = "No se pudieron listar los datos.";
         }
         return tabla;
-    }
-
-    public String getOne(int id) {
-        String sql = "SELECT * FROM prospecto WHERE id = ?";
-        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            try (ResultSet resultado = ps.executeQuery()) {
-                if (resultado.next()) {
-                    return "ID: " + resultado.getInt("id") + "<br>"
-                            + "Nombre: " + resultado.getString("nombre") + "<br>"
-                            + "Correo: " + resultado.getString("correo") + "<br>"
-                            + "Contraseña: " + resultado.getString("contraseña") + "<br>"
-                            + "Area: " + resultado.getString("area") + "<br>"
-                            + "Rol: " + resultado.getString("rol_id") + "<br>";
-                } else {
-                    return "No se encontró el registro.";
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return "No se encontró el registro.";
-        }
     }
 
     // Getters and Setters

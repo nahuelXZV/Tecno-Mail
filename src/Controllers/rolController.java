@@ -6,17 +6,19 @@ import Models.rolModel;
 import Utils.validatorUtils;
 
 public class rolController {
+
     private rolModel rol;
     private String respuesta;
-
+    
     public rolController() {
         rol = new rolModel();
     }
-
+    
     public String create(LinkedList<String> params) {
         this.validateCreate(params);
-        if (this.respuesta != null)
+        if (this.respuesta != null) {
             return this.respuesta;
+        }
         rol = new rolModel(0, params.get(0), params.get(1));
         if (rol.create()) {
             respuesta = "Creado exitosamente.";
@@ -25,11 +27,12 @@ public class rolController {
         }
         return respuesta;
     }
-
+    
     public String update(LinkedList<String> params) {
         validateUpdate(params);
-        if (this.respuesta != null)
+        if (this.respuesta != null) {
             return this.respuesta;
+        }
         rol = new rolModel(Integer.parseInt(params.get(0)), params.get(1), params.get(2));
         if (rol.update()) {
             respuesta = "Actualizado exitosamente.";
@@ -38,10 +41,11 @@ public class rolController {
         }
         return respuesta;
     }
-
+    
     public String delete(int id) {
-        if (!validatorUtils.validateNumber(String.valueOf(id)))
+        if (!validatorUtils.validateNumber(String.valueOf(id))) {
             return "El id debe ser un numero";
+        }
         rol.setId(id);
         if (rol.delete()) {
             respuesta = "Eliminado exitosamente.";
@@ -50,19 +54,15 @@ public class rolController {
         }
         return respuesta;
     }
-
+    
     public String getAll(LinkedList<String> params) {
         return rol.getAll(params);
     }
-
-    public String get(int id) {
-        if (!validatorUtils.validateNumber(String.valueOf(id)))
-            return "El id debe ser un numero";
-        rol.setId(id);
-        // System.out.println(rol.getOne(id));
-        return rol.getOne(id);
+    
+    public boolean exist(int id) {
+        return rol.exist(id);
     }
-
+    
     private void validateCreate(LinkedList<String> params) {
         rol = new rolModel();
         if (params.size() != 2) {
@@ -78,7 +78,7 @@ public class rolController {
             return;
         }
     }
-
+    
     private void validateUpdate(LinkedList<String> params) {
         rol = new rolModel();
         if (params.size() != 3) {
@@ -98,7 +98,7 @@ public class rolController {
             return;
         }
     }
-
+    
     public LinkedList<String> createList(String[] params) {
         LinkedList<String> list = new LinkedList<>();
         for (String param : params) {

@@ -55,10 +55,6 @@ public class prospectoController {
         return prospecto.getAll(params);
     }
 
-    public String get(int id) {
-        return prospecto.getOne(id);
-    }
-
     private void validateCreate(LinkedList<String> params) {
         if (params.size() != 7) {
             this.respuesta = "Numero de parametros incorrecto.";

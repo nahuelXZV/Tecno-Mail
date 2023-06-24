@@ -9,15 +9,20 @@ public class estudianteProgramaController {
 
     private estudianteProgramaModel estudiantePrograma;
     private String respuesta;
+    private programaController programa;
+    private estudianteController estudiante;
 
     public estudianteProgramaController() {
         estudiantePrograma = new estudianteProgramaModel();
+        programa = new programaController();
+        estudiante = new estudianteController();
     }
 
     public String create(LinkedList<String> params) {
         this.validateCreate(params);
-        if (this.respuesta != null)
+        if (this.respuesta != null) {
             return this.respuesta;
+        }
         estudiantePrograma = new estudianteProgramaModel(0, params.get(0),
                 Integer.parseInt(params.get(1)), Integer.parseInt(params.get(2)));
         if (estudiantePrograma.create()) {
@@ -30,8 +35,9 @@ public class estudianteProgramaController {
 
     public String update(LinkedList<String> params) {
         validateUpdate(params);
-        if (this.respuesta != null)
+        if (this.respuesta != null) {
             return this.respuesta;
+        }
         estudiantePrograma = new estudianteProgramaModel(Integer.parseInt(params.get(0)), params.get(1),
                 Integer.parseInt(params.get(2)),
                 Integer.parseInt(params.get(3)));
@@ -44,8 +50,9 @@ public class estudianteProgramaController {
     }
 
     public String delete(int id) {
-        if (!validatorUtils.validateNumber(String.valueOf(id)))
+        if (!validatorUtils.validateNumber(String.valueOf(id))) {
             return "El id debe ser un numero";
+        }
         estudiantePrograma.setId(id);
         if (estudiantePrograma.delete()) {
             respuesta = "Eliminado exitosamente.";
@@ -72,9 +79,16 @@ public class estudianteProgramaController {
             this.respuesta = "El ID del estudiante debe ser un numero";
             return;
         }
+        if (!estudiante.exist(Integer.parseInt(params.get(1)))) {
+            this.respuesta = "El ID del estudiante no existe.";
+            return;
+        }
         if (!validatorUtils.validateNumber(params.get(2))) {
             this.respuesta = "El ID del programa debe ser un numero";
             return;
+        }
+        if (!programa.exist(Integer.parseInt(params.get(2)))) {
+            this.respuesta = "El ID del programa no existe.";
         }
     }
 
@@ -96,9 +110,16 @@ public class estudianteProgramaController {
             this.respuesta = "El ID del estudiante debe ser un numero";
             return;
         }
+        if (!estudiante.exist(Integer.parseInt(params.get(2)))) {
+            this.respuesta = "El ID del estudiante no existe.";
+            return;
+        }
         if (!validatorUtils.validateNumber(params.get(3))) {
             this.respuesta = "El ID del programa debe ser un numero";
             return;
+        }
+        if (!programa.exist(Integer.parseInt(params.get(3)))) {
+            this.respuesta = "El ID del programa no existe.";
         }
     }
 

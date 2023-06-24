@@ -31,6 +31,12 @@ public class subjectValidator {
 
     // LIST-PRUEBA [,,,,,]
     public void ValidateSuject() {
+        usuarioController usuario = new usuarioController();
+        if (!usuario.auth(emailEmisor)) {
+            smtp.sendEmail(emailEmisor, "No tienes permisos para realizar esta acción.");
+            return;
+        }
+
         String subjectAux = subject.toLowerCase();
         subjectAux = subjectAux.trim();
         if (subjectAux.equals("help")) {
@@ -42,12 +48,12 @@ public class subjectValidator {
         int espacio = subject.indexOf(" ");
         if (parentesis1 == -1 && parentesis2 == -1) {
             smtp.sendEmail(emailEmisor,
-                    "No se reconoce el formato indicado. Verifique que está utilizando los corchetes([]) para realizar la petición.");
+                    "No se reconoce el formato indicado. Verifique que está utilizando los corchetes( [] ) para realizar la petición.");
             return;
         }
         if (parentesis1 > parentesis2) {
             smtp.sendEmail(emailEmisor,
-                    "No se reconoce el formato indicado. Verifique que está utilizando los corchetes([]) de forma ordenada.");
+                    "No se reconoce el formato indicado. Verifique que está utilizando los corchetes( [] ) de forma ordenada.");
             return;
         }
         if (parentesis1 < 0) {
@@ -92,21 +98,21 @@ public class subjectValidator {
         String params = subject.substring(firstSpace + 1, subject.length());
         String[] opcionArray = command.split("-"); // [LIST, PRUEBA]
 
-        System.out.println("command: " + command); // LIST-PRUEBA
-        System.out.println("params: " + params); // [,,,,,]
-
+        // System.out.println("COMANDO: " + command); // LIST-PRUEBA
+        // System.out.println("PARAMETRO: " + params); // [,,,,,]
         params = params.replace("[", "");
         params = params.replace("]", "");
 
         String opcion = opcionArray[1];
-        System.out.println("opcionArray[0]: " + opcionArray[0]); // LIST
-        System.out.println("opcionArray[1]: " + opcionArray[1]); // PRUEBA
+        // System.out.println("opcionArray[0]: " + opcionArray[0]); // LIST
+        // System.out.println("opcionArray[1]: " + opcionArray[1]); // PRUEBA
 
         String[] parametros;
-        if (params.length() >= 1)
+        if (params.length() >= 1) {
             parametros = params.split(","); // [, , , , ,]
-        else
+        } else {
             parametros = new String[0];
+        }
 
         if (opcion.toLowerCase().equals("usuario")) {
             usuarioController usuario = new usuarioController();
@@ -114,10 +120,6 @@ public class subjectValidator {
             switch (opcionArray[0].toLowerCase()) {
                 case "list":
                     response = usuario.getAll(paramsList);
-                    smtp.sendEmail(emailEmisor, response);
-                    break;
-                case "get":
-                    response = usuario.get(Integer.parseInt(paramsList.get(0)));
                     smtp.sendEmail(emailEmisor, response);
                     break;
                 case "create":
@@ -148,10 +150,6 @@ public class subjectValidator {
                     response = rol.getAll(paramsList);
                     smtp.sendEmail(emailEmisor, response);
                     break;
-                case "get":
-                    response = rol.get(Integer.parseInt(paramsList.get(0)));
-                    smtp.sendEmail(emailEmisor, response);
-                    break;
                 case "create":
                     response = rol.create(paramsList);
                     smtp.sendEmail(emailEmisor, response);
@@ -178,10 +176,6 @@ public class subjectValidator {
             switch (opcionArray[0].toLowerCase()) {
                 case "list":
                     response = estudiante.getAll(paramsList);
-                    smtp.sendEmail(emailEmisor, response);
-                    break;
-                case "get":
-                    response = estudiante.get(Integer.parseInt(paramsList.get(0)));
                     smtp.sendEmail(emailEmisor, response);
                     break;
                 case "create":
@@ -212,10 +206,6 @@ public class subjectValidator {
                     response = prospecto.getAll(paramsList);
                     smtp.sendEmail(emailEmisor, response);
                     break;
-                case "get":
-                    response = prospecto.get(Integer.parseInt(paramsList.get(0)));
-                    smtp.sendEmail(emailEmisor, response);
-                    break;
                 case "create":
                     response = prospecto.create(paramsList);
                     smtp.sendEmail(emailEmisor, response);
@@ -244,10 +234,6 @@ public class subjectValidator {
                     response = programa.getAll(paramsList);
                     smtp.sendEmail(emailEmisor, response);
                     break;
-                case "get":
-                    // response = programa.get(Integer.parseInt(paramsList.get(0)));
-                    smtp.sendEmail(emailEmisor, response);
-                    break;
                 case "create":
                     response = programa.create(paramsList);
                     smtp.sendEmail(emailEmisor, response);
@@ -268,16 +254,28 @@ public class subjectValidator {
             return;
         }
 
+        if (opcion.toLowerCase().equals("oferta")) {
+            programaController programa = new programaController();
+            LinkedList<String> paramsList = programa.createList(parametros);
+            switch (opcionArray[0].toLowerCase()) {
+                case "list":
+                    response = programa.getOferta(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                default:
+                    smtp.sendEmail(emailEmisor,
+                            "No se reconoce el formato indicado. Verifique que sea una de estas opciones List, Get, Create, Update, Delete.");
+                    break;
+            }
+            return;
+        }
+
         if (opcion.toLowerCase().equals("modulo")) {
             moduloController modulo = new moduloController();
             LinkedList<String> paramsList = modulo.createList(parametros);
             switch (opcionArray[0].toLowerCase()) {
                 case "list":
                     response = modulo.getAll(paramsList);
-                    smtp.sendEmail(emailEmisor, response);
-                    break;
-                case "get":
-                    // response = modulo.get(Integer.parseInt(paramsList.get(0)));
                     smtp.sendEmail(emailEmisor, response);
                     break;
                 case "create":
@@ -308,10 +306,6 @@ public class subjectValidator {
                     response = docente.getAll(paramsList);
                     smtp.sendEmail(emailEmisor, response);
                     break;
-                case "get":
-                    // response = docente.get(Integer.parseInt(paramsList.get(0)));
-                    smtp.sendEmail(emailEmisor, response);
-                    break;
                 case "create":
                     response = docente.create(paramsList);
                     smtp.sendEmail(emailEmisor, response);
@@ -338,10 +332,6 @@ public class subjectValidator {
             switch (opcionArray[0].toLowerCase()) {
                 case "list":
                     response = calendarioAcademico.getAll(paramsList);
-                    smtp.sendEmail(emailEmisor, response);
-                    break;
-                case "get":
-                    // response = calendarioAcademico.get(Integer.parseInt(paramsList.get(0)));
                     smtp.sendEmail(emailEmisor, response);
                     break;
                 case "create":
@@ -372,10 +362,6 @@ public class subjectValidator {
                     response = contrato.getAll(paramsList);
                     smtp.sendEmail(emailEmisor, response);
                     break;
-                case "get":
-                    // response = contrato.get(Integer.parseInt(paramsList.get(0)));
-                    smtp.sendEmail(emailEmisor, response);
-                    break;
                 case "create":
                     response = contrato.create(paramsList);
                     smtp.sendEmail(emailEmisor, response);
@@ -402,10 +388,6 @@ public class subjectValidator {
             switch (opcionArray[0].toLowerCase()) {
                 case "list":
                     response = procesoModulo.getAll(paramsList);
-                    smtp.sendEmail(emailEmisor, response);
-                    break;
-                case "get":
-                    // response = procesoModulo.get(Integer.parseInt(paramsList.get(0)));
                     smtp.sendEmail(emailEmisor, response);
                     break;
                 case "create":
@@ -436,10 +418,6 @@ public class subjectValidator {
                     response = procesoRealizado.getAll(paramsList);
                     smtp.sendEmail(emailEmisor, response);
                     break;
-                case "get":
-                    // response = procesoRealizado.get(Integer.parseInt(paramsList.get(0)));
-                    smtp.sendEmail(emailEmisor, response);
-                    break;
                 case "create":
                     response = procesoRealizado.create(paramsList);
                     smtp.sendEmail(emailEmisor, response);
@@ -466,10 +444,6 @@ public class subjectValidator {
             switch (opcionArray[0].toLowerCase()) {
                 case "list":
                     response = estudianteNota.getAll(paramsList);
-                    smtp.sendEmail(emailEmisor, response);
-                    break;
-                case "get":
-                    // response = estudianteNota.get(Integer.parseInt(paramsList.get(0)));
                     smtp.sendEmail(emailEmisor, response);
                     break;
                 case "create":
@@ -500,10 +474,6 @@ public class subjectValidator {
                     response = inscripcion.getAll(paramsList);
                     smtp.sendEmail(emailEmisor, response);
                     break;
-                case "get":
-                    // response = inscripcion.get(Integer.parseInt(paramsList.get(0)));
-                    smtp.sendEmail(emailEmisor, response);
-                    break;
                 case "create":
                     response = inscripcion.create(paramsList);
                     smtp.sendEmail(emailEmisor, response);
@@ -518,22 +488,18 @@ public class subjectValidator {
                     break;
                 default:
                     smtp.sendEmail(emailEmisor,
-                            "No se reconoce el formato indicado. Verifique que sea una de estas opciones List, Get, Create, Update, Delete.");
+                            "No se reconoce el formato indicado. Verifique que sea una de estas opciones List, Create, Update, Delete.");
                     break;
             }
             return;
         }
 
         smtp.sendEmail(emailEmisor, "Comando incorrecto, Verifique que este enviando bien los comandos");
-        System.out.println("NO ENTRO ");
-        // ....
     }
 
     private String AllComand() {
-        return "Content-Type: text/html; charset=\"UTF-8\" \n \n"
-                + "<h1>ESCUELA DE INGENIERIA - COMANDOS</h1>"
+        return "<h1>ESCUELA DE INGENIERIA - COMANDOS</h1>"
                 + "<table style=\" border-collapse: collapse; width: 100%; border: 1px solid black; padding: 8px;\"> \n \n"
-
                 + "<tr> \n \n"
                 + "<th style=\"text-align: center; padding: 8px; background-color: #1C7293; color: white; border: 1px solid black;\"> FUNCIONALIDAD </th> \n \n"
                 + "<th style=\"text-align: center; padding: 8px; background-color: #1C7293; color: white; border: 1px solid black;\"> COMANDO </th> \n \n"
@@ -554,7 +520,6 @@ public class subjectValidator {
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar roles</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-ROL [] || LIST-ROL [KEY, VALOR]</td> \n \n"
                 + "</tr> \n \n"
-
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar usuario</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-USUARIO [NOMBRE, CORREO, CONTRASEÑA, AREA, ROL_ID]</td> \n \n"
@@ -571,7 +536,6 @@ public class subjectValidator {
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar usuarios</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-USUARIO [] || LIST-USUARIO [KEY, VALOR]</td> \n \n"
                 + "</tr> \n \n"
-
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar estudiante</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-ESTUDIANTE [HONORIFICO, NOMBRE, APELLIDO, CI, CI EXPEDICION, TELEFONO, CORREO, CARRERA, UNIVERSIDAD, ESTADO, FECHA INACTIVIDAD, SEXO, NACIONALIDAD]</td> \n \n"
@@ -588,7 +552,6 @@ public class subjectValidator {
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar estudiantes</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-ESTUDIANTE [] || LIST-ESTUDIANTE [KEY, VALOR]</td> \n \n"
                 + "</tr> \n \n"
-
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar prospecto</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-PROSPECTO [NOMBRE, TELEFONO, CORREO, INTERES, CARRERA, ESTADO, DETALLES]</td> \n \n"
@@ -605,7 +568,6 @@ public class subjectValidator {
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar prospecto</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-PROSPECTO [] || LIST-PROSPECTO [KEY, VALOR]</td> \n \n"
                 + "</tr> \n \n"
-
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar programa</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-PROGRAMA [CODIGO PROGRAMA, NOMBRE, SIGLA, EDICION, VERSION, FECHA INICIO, FECHA FINAL, COSTO, TIPO, MODALIDAD, HRS ACADEMICAS]</td> \n \n"
@@ -622,7 +584,10 @@ public class subjectValidator {
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar programa</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-PROGRAMA [] || LIST-PROGRAMA [KEY, VALOR]</td> \n \n"
                 + "</tr> \n \n"
-
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar oferta academica</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-OFERTA [] || LIST-OFERTA [KEY, VALOR]</td> \n \n"
+                + "</tr> \n \n"
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar modulo</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-MODULO [CODIGO MODULO, NOMBRE, SIGLA, VERSION, EDICION, MODALIDAD, FECHA INICIO, FECHA FINAL, PROGRAMA_ID, DOCENTE_ID]</td> \n \n"
@@ -639,7 +604,6 @@ public class subjectValidator {
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar modulo</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-MODULO [] || LIST-MODULO [KEY, VALOR]</td> \n \n"
                 + "</tr> \n \n"
-
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar docente</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-DOCENTE [HONORIFICO, NOMBRE, APELLIDO, CORREO, TELEFONO, CI, CI EXPEDICION, FACTURACION]</td> \n \n"
@@ -656,7 +620,6 @@ public class subjectValidator {
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar docente</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-DOCENTE [] || LIST-DOCENTE [KEY, VALOR]</td> \n \n"
                 + "</tr> \n \n"
-
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar evento en el calendario</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-CALENDARIO [NOMBRE, FECHA INICIO, FECHA FINAL, TIPO EVENTO, TIPO DE FECHA, LUGAR, HORA, ENCARGADO]</td> \n \n"
@@ -673,7 +636,6 @@ public class subjectValidator {
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar evento en el calendario</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-CALENDARIO [] || LIST-CALENDARIO [KEY, VALOR]</td> \n \n"
                 + "</tr> \n \n"
-
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar contrato</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-CONTRATO [HONORARIO, FECHA INICIO, FECHA FINAL, HORARIO, PAGADO, NRO PREVENTIVA, ESTADO, MODULO_ID]</td> \n \n"
@@ -690,7 +652,6 @@ public class subjectValidator {
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar contrato</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-CONTRATO [] || LIST-CONTRATO [KEY, VALOR]</td> \n \n"
                 + "</tr> \n \n"
-
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar proceso</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-PROCESO [NOMBRE, ORDEN]</td> \n \n"
@@ -707,7 +668,6 @@ public class subjectValidator {
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar proceso</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-PROCESO [] || LIST-PROCESO [KEY, VALOR]</td> \n \n"
                 + "</tr> \n \n"
-
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar proceso realizado</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-PROCESOREALIZADO [FECHA, PROCESO_ID, MODULO_ID]</td> \n \n"
@@ -724,7 +684,6 @@ public class subjectValidator {
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar proceso realizado</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-PROCESOREALIZADO [] || LIST-PROCESOREALIZADO [KEY, VALOR]</td> \n \n"
                 + "</tr> \n \n"
-
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar notas</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-NOTA [ NOTA, DETALLES, ESTUDIANTE_ID, PROGRAMA_ID, MODULO_ID]</td> \n \n"
@@ -741,7 +700,6 @@ public class subjectValidator {
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar notas</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-NOTA [] || LIST-NOTA [KEY, VALOR]</td> \n \n"
                 + "</tr> \n \n"
-
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar inscripcion</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-INSCRIPCION [FECHA INSCRIPCION, ESTUDIANTE_ID, PROGRAMA_ID]</td> \n \n"
@@ -758,7 +716,6 @@ public class subjectValidator {
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar inscripcion</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-INSCRIPCION [] || LIST-INSCRIPCION [KEY, VALOR]</td> \n \n"
                 + "</tr> \n \n"
-
                 + "</table>";
 
     }

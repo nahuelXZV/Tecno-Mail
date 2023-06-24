@@ -9,15 +9,18 @@ public class contratoController {
 
     private contratoModel contrato;
     private String respuesta;
+    private moduloController modulo;
 
     public contratoController() {
         contrato = new contratoModel();
+        modulo = new moduloController();
     }
 
     public String create(LinkedList<String> params) {
         this.validateCreate(params);
-        if (this.respuesta != null)
+        if (this.respuesta != null) {
             return this.respuesta;
+        }
         contrato = new contratoModel(0, params.get(0), params.get(1), params.get(2), params.get(3),
                 params.get(4), params.get(5), params.get(6), Integer.parseInt(params.get(7)));
         if (contrato.create()) {
@@ -30,8 +33,9 @@ public class contratoController {
 
     public String update(LinkedList<String> params) {
         this.validateUpdate(params);
-        if (this.respuesta != null)
+        if (this.respuesta != null) {
             return this.respuesta;
+        }
         contrato = new contratoModel(Integer.parseInt(params.get(0)), params.get(1), params.get(2), params.get(3),
                 params.get(4), params.get(5), params.get(6), params.get(7), Integer.parseInt(params.get(7)));
         if (contrato.update()) {
@@ -94,6 +98,9 @@ public class contratoController {
             this.respuesta = "El id del modulo debe ser un numero.";
             return;
         }
+        if (!modulo.exist(Integer.parseInt(params.get(7)))) {
+            this.respuesta = "El ID del modulo no existe.";
+        }
     }
 
     private void validateUpdate(LinkedList<String> params) {
@@ -134,8 +141,11 @@ public class contratoController {
             return;
         }
         if (!validatorUtils.validateNumber(params.get(8))) {
-            this.respuesta = "El id del modulo debe ser un numero.";
+            this.respuesta = "El ID del modulo debe ser un numero.";
             return;
+        }
+        if (!modulo.exist(Integer.parseInt(params.get(8)))) {
+            this.respuesta = "El ID del modulo no existe.";
         }
     }
 

@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import Services.conexionDB;
 
 public class usuarioModel {
+
     private int id;
     private String nombre;
     private String correo;
@@ -111,9 +112,7 @@ public class usuarioModel {
         String tabla = "";
         Statement consulta;
         ResultSet resultado = null;
-        tabla = "Content-Type: text/html; charset=\"UTF-8\"\n"
-                + "\n"
-                + "<h1>Lista de usuarios</h1>"
+        tabla = "<h1>Lista de usuarios</h1>"
                 + "<table style=\"border-collapse: collapse; width: 100%; border: 1px solid black;\">\n"
                 + "\n"
                 + "  <tr>\n"
@@ -131,11 +130,12 @@ public class usuarioModel {
 
         try {
             String query;
-            if (params.size() == 0)
+            if (params.size() == 0) {
                 query = "SELECT usuario.id, usuario.nombre, usuario.correo, usuario.area, rol.nombre as rol FROM usuario, rol WHERE usuario.rol_id = rol.id";
-            else
+            } else {
                 query = "SELECT usuario.id, usuario.nombre, usuario.correo, usuario.area, rol.nombre as rol FROM usuario, rol WHERE usuario.rol_id = rol.id AND "
                         + params.get(0) + " LIKE '%" + params.get(1) + "%'";
+            }
 
             Connection con = conexion.connect();
             consulta = con.createStatement();
@@ -165,28 +165,6 @@ public class usuarioModel {
             tabla = "No se pudieron listar los datos.";
         }
         return tabla;
-    }
-
-    public String getOne(int id) {
-        String sql = "SELECT * FROM usuario WHERE id = ?";
-        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            try (ResultSet resultado = ps.executeQuery()) {
-                if (resultado.next()) {
-                    return "ID: " + resultado.getInt("id") + "<br>"
-                            + "Nombre: " + resultado.getString("nombre") + "<br>"
-                            + "Correo: " + resultado.getString("correo") + "<br>"
-                            + "Contraseña: " + resultado.getString("contraseña") + "<br>"
-                            + "Area: " + resultado.getString("area") + "<br>"
-                            + "Rol: " + resultado.getString("rol_id") + "<br>";
-                } else {
-                    return "No se encontró el registro.";
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return "No se encontró el registro.";
-        }
     }
 
     // Getters y Setters

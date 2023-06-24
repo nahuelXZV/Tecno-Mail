@@ -6,17 +6,21 @@ import Models.usuarioModel;
 import Utils.validatorUtils;
 
 public class usuarioController {
+
     private usuarioModel usuario;
     private String respuesta;
+    private rolController rol;
 
     public usuarioController() {
         usuario = new usuarioModel();
+        rol = new rolController();
     }
 
     public String create(LinkedList<String> params) {
         this.validateCreate(params);
-        if (this.respuesta != null)
+        if (this.respuesta != null) {
             return this.respuesta;
+        }
         usuario = new usuarioModel(0, params.get(0), params.get(1), params.get(2), params.get(3),
                 Integer.parseInt(params.get(4)));
         if (usuario.create()) {
@@ -29,8 +33,9 @@ public class usuarioController {
 
     public String update(LinkedList<String> params) {
         validateUpdate(params);
-        if (this.respuesta != null)
+        if (this.respuesta != null) {
             return this.respuesta;
+        }
         usuario = new usuarioModel(Integer.parseInt(params.get(0)), params.get(1), params.get(2), params.get(3),
                 params.get(4), Integer.parseInt(params.get(5)));
         if (usuario.update()) {
@@ -42,8 +47,9 @@ public class usuarioController {
     }
 
     public String delete(int id) {
-        if (!validatorUtils.validateNumber(String.valueOf(id)))
+        if (!validatorUtils.validateNumber(String.valueOf(id))) {
             return "El id debe ser un numero";
+        }
         usuario.setId(id);
         if (usuario.delete()) {
             respuesta = "Eliminado exitosamente.";
@@ -57,11 +63,11 @@ public class usuarioController {
         return usuario.getAll(params);
     }
 
-    public String get(int id) {
-        if (!validatorUtils.validateNumber(String.valueOf(id)))
-            return "El id debe ser un numero";
-        usuario.setId(id);
-        return usuario.getOne(id);
+    public boolean auth(String email) {
+        if (!validatorUtils.validateEmail(email) || !usuario.emailExist(email)) {
+            return false;
+        }
+        return true;
     }
 
     private void validateCreate(LinkedList<String> params) {
@@ -91,8 +97,11 @@ public class usuarioController {
             return;
         }
         if (!validatorUtils.validateNumber(params.get(4))) {
-            this.respuesta = "El rol_id debe ser un numero";
+            this.respuesta = "El ID del rol debe ser un numero";
             return;
+        }
+        if (!rol.exist(Integer.parseInt(params.get(4)))) {
+            this.respuesta = "El ID del rol no existe";
         }
     }
 
@@ -133,6 +142,9 @@ public class usuarioController {
         if (!validatorUtils.validateNumber(params.get(5))) {
             this.respuesta = "El rol_id debe ser un numero";
             return;
+        }
+        if (!rol.exist(Integer.parseInt(params.get(5)))) {
+            this.respuesta = "El ID del rol no existe";
         }
     }
 

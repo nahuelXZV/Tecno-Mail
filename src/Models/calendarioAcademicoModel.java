@@ -119,9 +119,7 @@ public class calendarioAcademicoModel {
         String tabla = "";
         Statement consulta;
         ResultSet resultado = null;
-        tabla = "Content-Type: text/html; charset=\"UTF-8\"\n"
-                + "\n"
-                + "<h1>Lista de eventos academicos</h1>"
+        tabla = "<h1>Lista de eventos academicos</h1>"
                 + "<table style=\"border-collapse: collapse; width: 100%; border: 1px solid black;\">\n"
                 + "\n"
                 + "  <tr>\n"
@@ -147,11 +145,12 @@ public class calendarioAcademicoModel {
 
         try {
             String query;
-            if (params.size() == 0)
+            if (params.size() == 0) {
                 query = "SELECT id, nombre, fecha_inicio, fecha_finalizacion, tipo, tipo_fecha, lugar, hora, encargado FROM calendario_academico";
-            else
+            } else {
                 query = "SELECT id, nombre, fecha_inicio, fecha_finalizacion, tipo, tipo_fecha, lugar, hora, encargado FROM calendario_academico WHERE "
                         + params.get(0) + " LIKE '%" + params.get(1) + "%'";
+            }
 
             Connection con = conexion.connect();
             consulta = con.createStatement();

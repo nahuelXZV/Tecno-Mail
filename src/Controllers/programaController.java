@@ -6,6 +6,7 @@ import Models.programaModel;
 import Utils.validatorUtils;
 
 public class programaController {
+
     private programaModel programa;
     private String respuesta;
 
@@ -15,8 +16,9 @@ public class programaController {
 
     public String create(LinkedList<String> params) {
         this.validateCreate(params);
-        if (this.respuesta != null)
+        if (this.respuesta != null) {
             return this.respuesta;
+        }
         programa = new programaModel(0,
                 params.get(0), params.get(1), params.get(2), params.get(3),
                 params.get(4), params.get(5), params.get(6), params.get(7), params.get(8), params.get(9),
@@ -32,8 +34,9 @@ public class programaController {
 
     public String update(LinkedList<String> params) {
         validateUpdate(params);
-        if (this.respuesta != null)
+        if (this.respuesta != null) {
             return this.respuesta;
+        }
         programa = new programaModel(Integer.parseInt(params.get(0)),
                 params.get(1), params.get(2), params.get(3), params.get(4),
                 params.get(5), params.get(6), params.get(7), params.get(8), params.get(9), params.get(10),
@@ -60,9 +63,12 @@ public class programaController {
         return programa.getAll(params);
     }
 
-    public String get(int id) {
-        programa.setId(id);
-        return programa.getOne(id);
+    public String getOferta(LinkedList<String> params) {
+        return programa.getOferta(params);
+    }
+
+    public boolean exist(int id) {
+        return programa.exist(id);
     }
 
     private void validateCreate(LinkedList<String> params) {
