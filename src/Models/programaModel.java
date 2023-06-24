@@ -159,7 +159,7 @@ public class programaModel {
                 query = "SELECT id, codigo_programa, nombre, sigla, edicion, version, fecha_inicio, fecha_finalizacion, costo, tipo, modalidad, hrs_academicas FROM programa";
             } else {
                 query = "SELECT id, codigo_programa, nombre, sigla, edicion, version, fecha_inicio, fecha_finalizacion, costo, tipo, modalidad, hrs_academicas FROM programa WHERE "
-                        + params.get(0) + " LIKE '%" + params.get(1) + "%'";
+                        + params.get(0) + " ILIKE '%" + params.get(1) + "%'";
             }
 
             Connection con = conexion.connect();

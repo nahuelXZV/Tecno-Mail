@@ -106,8 +106,8 @@ public class estudianteNotaModel {
             if (params.size() == 0) {
                 query = "SELECT estudiante_nota.id, CONCAT(estudiante.nombre, ' ', estudiante.apellido) AS estudiante, programa.nombre AS programa, modulo.nombre AS modulo, estudiante_nota.nota, estudiante_nota.detalles FROM estudiante_nota INNER JOIN estudiante ON estudiante_nota.estudiante_id = estudiante.id INNER JOIN programa ON estudiante_nota.programa_id = programa.id INNER JOIN modulo ON estudiante_nota.modulo_id = modulo.id";
             } else {
-                query = "SELECT estudiante_nota.id, CONCAT(estudiante.nombre, ' ', estudiante.apellido) AS estudiante, programa.nombre AS programa, modulo.nombre AS modulo, estudiante_nota.nota, estudiante_nota.detalles FROM estudiante_nota INNER JOIN estudiante ON estudiante_nota.estudiante_id = estudiante.id INNER JOIN programa ON estudiante_nota.programa_id = programa.id INNER JOIN modulo ON estudiante_nota.modulo_id = modulo.id AND"
-                        + params.get(0) + " LIKE '%" + params.get(1) + "%'";
+                query = "SELECT estudiante_nota.id, CONCAT(estudiante.nombre, ' ', estudiante.apellido) AS estudiante, programa.nombre AS programa, modulo.nombre AS modulo, estudiante_nota.nota, estudiante_nota.detalles FROM estudiante_nota INNER JOIN estudiante ON estudiante_nota.estudiante_id = estudiante.id INNER JOIN programa ON estudiante_nota.programa_id = programa.id INNER JOIN modulo ON estudiante_nota.modulo_id = modulo.id WHERE"
+                        + params.get(0) + " ILIKE '%" + params.get(1) + "%'";
             }
 
             Connection con = conexion.connect();

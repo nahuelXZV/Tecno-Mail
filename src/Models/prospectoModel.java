@@ -134,7 +134,7 @@ public class prospectoModel {
                 query = "SELECT id, nombre, telefono, correo, interes, carrera, estado, detalles FROM prospecto";
             } else {
                 query = "SELECT id, nombre, telefono, correo, interes, carrera, estado, detalles FROM prospecto WHERE "
-                        + params.get(0) + " LIKE '%" + params.get(1) + "%'";
+                        + params.get(0) + " ILIKE '%" + params.get(1) + "%'";
             }
 
             Connection con = conexion.connect();

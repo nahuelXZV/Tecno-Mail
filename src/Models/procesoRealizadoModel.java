@@ -97,8 +97,8 @@ public class procesoRealizadoModel {
             if (params.size() == 0)
                 query = "SELECT proceso_realizado.id, proceso_realizado.fecha, proceso_modulo.nombre, proceso_modulo.orden, modulo.nombre FROM proceso_realizado INNER JOIN proceso_modulo ON proceso_realizado.proceso_modulo_id = proceso_modulo.id INNER JOIN modulo ON proceso_realizado.modulo_id = modulo.id";
             else
-                query = "SELECT proceso_realizado.id, proceso_realizado.fecha, proceso_modulo.nombre, proceso_modulo.orden, modulo.nombre FROM proceso_realizado INNER JOIN proceso_modulo ON proceso_realizado.proceso_modulo_id = proceso_modulo.id INNER JOIN modulo ON proceso_realizado.modulo_id = modulo.id AND"
-                        + params.get(0) + " LIKE '%" + params.get(1) + "%'";
+                query = "SELECT proceso_realizado.id, proceso_realizado.fecha, proceso_modulo.nombre, proceso_modulo.orden, modulo.nombre FROM proceso_realizado INNER JOIN proceso_modulo ON proceso_realizado.proceso_modulo_id = proceso_modulo.id INNER JOIN modulo ON proceso_realizado.modulo_id = modulo.id WHERE "
+                        + params.get(0) + " ILIKE '%" + params.get(1) + "%'";
 
             Connection con = conexion.connect();
             consulta = con.createStatement();

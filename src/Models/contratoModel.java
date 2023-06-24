@@ -144,7 +144,7 @@ public class contratoModel {
                 query = "SELECT contrato.id as id, contrato.honorario, contrato.fecha_inicio, contrato.fecha_finalizacion, contrato.horario, contrato.pagado, contrato.nro_preventiva, contrato.estado, modulo.nombre as modulo FROM contrato, modulo WHERE contrato.modulo_id = modulo.id";
             else
                 query = "SELECT contrato.id as id, contrato.honorario, contrato.fecha_inicio, contrato.fecha_finalizacion, contrato.horario, contrato.pagado, contrato.nro_preventiva, contrato.estado, modulo.nombre as modulo FROM contrato, modulo WHERE contrato.modulo_id = modulo.id AND "
-                        + params.get(0) + " LIKE '%" + params.get(1) + "%'";
+                        + params.get(0) + " ILIKE '%" + params.get(1) + "%'";
 
             Connection con = conexion.connect();
             consulta = con.createStatement();

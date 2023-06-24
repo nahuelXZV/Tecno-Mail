@@ -101,7 +101,7 @@ public class rolModel {
             if (params.size() == 0)
                 query = "SELECT id, nombre, descripcion FROM rol";
             else
-                query = "SELECT id, nombre, descripcion FROM rol WHERE " + params.get(0) + " LIKE '%" + params.get(1)
+                query = "SELECT id, nombre, descripcion FROM rol WHERE " + params.get(0) + " ILIKE '%" + params.get(1)
                         + "%'";
 
             Connection con = conexion.connect();

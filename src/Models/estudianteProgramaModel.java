@@ -92,10 +92,10 @@ public class estudianteProgramaModel {
         try {
             String query;
             if (params.size() == 0) {
-                query = "SELECT estudiante_programa.id, estudiante.nombre, programa.nombre, estudiante_programa.fecha_inscripcion FROM estudiante_programa INNER JOIN estudiante ON estudiante_programa.estudiante_id = estudiante.id INNER JOIN programa ON estudiante_programa.programa_id = programa.id";
+                query = "SELECT estudiante_programa.id, CONCAT(estudiante.nombre, ' ', estudiante.apellido) AS estudiante, programa.nombre, estudiante_programa.fecha_inscripcion FROM estudiante_programa INNER JOIN estudiante ON estudiante_programa.estudiante_id = estudiante.id INNER JOIN programa ON estudiante_programa.programa_id = programa.id";
             } else {
-                query = "SELECT estudiante_programa.id, estudiante.nombre, programa.nombre, estudiante_programa.fecha_inscripcion FROM estudiante_programa INNER JOIN estudiante ON estudiante_programa.estudiante_id = estudiante.id INNER JOIN programa ON estudiante_programa.programa_id = programa.id AND "
-                        + params.get(0) + " LIKE '%" + params.get(1) + "%'";
+                query = "SELECT estudiante_programa.id, CONCAT(estudiante.nombre, ' ', estudiante.apellido) AS estudiante, programa.nombre, estudiante_programa.fecha_inscripcion FROM estudiante_programa INNER JOIN estudiante ON estudiante_programa.estudiante_id = estudiante.id INNER JOIN programa ON estudiante_programa.programa_id = programa.id WHERE "
+                        + params.get(0) + " ILIKE '%" + params.get(1) + "%'";
             }
 
             Connection con = conexion.connect();

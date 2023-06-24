@@ -88,7 +88,7 @@ public class procesoModuloModel {
             if (params.size() == 0) {
                 query = "SELECT id, nombre, orden FROM proceso_modulo";
             } else {
-                query = "SELECT id, nombre, orden FROM proceso_modulo WHERE " + params.get(0) + " LIKE '%"
+                query = "SELECT id, nombre, orden FROM proceso_modulo WHERE " + params.get(0) + " ILIKE '%"
                         + params.get(1) + "%'";
             }
 

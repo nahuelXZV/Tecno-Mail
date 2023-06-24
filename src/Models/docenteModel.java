@@ -146,7 +146,7 @@ public class docenteModel {
                 query = "SELECT id, honorifico, nombre, apellido, correo, ci, ci_expedicion, telefono, facturacion FROM docente";
             else
                 query = "SELECT id, honorifico, nombre, apellido, correo, ci, ci_expedicion, telefono, facturacion FROM docente WHERE "
-                        + params.get(0) + " LIKE '%" + params.get(1) + "%'";
+                        + params.get(0) + " ILIKE '%" + params.get(1) + "%'";
 
             Connection con = conexion.connect();
             consulta = con.createStatement();

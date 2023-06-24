@@ -169,7 +169,7 @@ public class estudianteModel {
                 query = "SELECT id, honorifico, nombre, apellido, ci, ci_expedicion, telefono, correo, carrera, universidad, estado, sexo, nacionalidad FROM estudiante";
             } else {
                 query = "SELECT id, honorifico, nombre, apellido, ci, ci_expedicion, telefono, correo, carrera, universidad, estado, sexo, nacionalidad FROM estudiante WHERE "
-                        + params.get(0) + " LIKE '%" + params.get(1) + "%'";
+                        + params.get(0) + " ILIKE '%" + params.get(1) + "%'";
             }
 
             Connection con = conexion.connect();

@@ -149,7 +149,7 @@ public class calendarioAcademicoModel {
                 query = "SELECT id, nombre, fecha_inicio, fecha_finalizacion, tipo, tipo_fecha, lugar, hora, encargado FROM calendario_academico";
             } else {
                 query = "SELECT id, nombre, fecha_inicio, fecha_finalizacion, tipo, tipo_fecha, lugar, hora, encargado FROM calendario_academico WHERE "
-                        + params.get(0) + " LIKE '%" + params.get(1) + "%'";
+                        + params.get(0) + " ILIKE '%" + params.get(1) + "%'";
             }
 
             Connection con = conexion.connect();

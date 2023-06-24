@@ -134,7 +134,7 @@ public class usuarioModel {
                 query = "SELECT usuario.id, usuario.nombre, usuario.correo, usuario.area, rol.nombre as rol FROM usuario, rol WHERE usuario.rol_id = rol.id";
             } else {
                 query = "SELECT usuario.id, usuario.nombre, usuario.correo, usuario.area, rol.nombre as rol FROM usuario, rol WHERE usuario.rol_id = rol.id AND "
-                        + params.get(0) + " LIKE '%" + params.get(1) + "%'";
+                        + params.get(0) + " ILIKE '%" + params.get(1) + "%'";
             }
 
             Connection con = conexion.connect();
