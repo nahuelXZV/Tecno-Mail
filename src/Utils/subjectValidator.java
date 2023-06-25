@@ -22,14 +22,16 @@ public class subjectValidator {
     private String subject;
     private String emailEmisor;
     private smtpService smtp;
+    private usuarioController userValidate;
 
     public subjectValidator(String subject, String emailEmisor) {
         this.subject = subject;
         this.emailEmisor = emailEmisor;
+        this.userValidate = new usuarioController();
         smtp = new smtpService();
+
     }
 
-    // LIST-PRUEBA [,,,,,]
     public void ValidateSuject() {
         usuarioController usuario = new usuarioController();
         if (!usuario.auth(emailEmisor)) {
@@ -81,7 +83,7 @@ public class subjectValidator {
         }
         String command = subject.substring(0, firstSpace);
 
-        String[] opcionArray = command.split("-"); // [LIST, PRUEBA]
+        String[] opcionArray = command.split("-"); 
         if (opcionArray.length != 2) {
             smtp.sendEmail(emailEmisor,
                     "No se reconoce el formato indicado. Verifique que exista un '-' en el comando.");
@@ -96,25 +98,22 @@ public class subjectValidator {
         int firstSpace = subject.indexOf(" ");
         String command = subject.substring(0, firstSpace);
         String params = subject.substring(firstSpace + 1, subject.length());
-        String[] opcionArray = command.split("-"); // [LIST, PRUEBA]
-
-        // System.out.println("COMANDO: " + command); // LIST-PRUEBA
-        // System.out.println("PARAMETRO: " + params); // [,,,,,]
+        String[] opcionArray = command.split("-");
         params = params.replace("[", "");
         params = params.replace("]", "");
-
         String opcion = opcionArray[1];
-        // System.out.println("opcionArray[0]: " + opcionArray[0]); // LIST
-        // System.out.println("opcionArray[1]: " + opcionArray[1]); // PRUEBA
-
         String[] parametros;
         if (params.length() >= 1) {
-            parametros = params.split(","); // [, , , , ,]
+            parametros = params.split(","); 
         } else {
             parametros = new String[0];
         }
 
         if (opcion.toLowerCase().equals("usuario")) {
+            if (!this.userValidate.validateRol(this.emailEmisor, "Administrador")) {
+                smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
+                return;
+            }
             usuarioController usuario = new usuarioController();
             LinkedList<String> paramsList = usuario.createList(parametros);
             switch (opcionArray[0].toLowerCase()) {
@@ -143,6 +142,10 @@ public class subjectValidator {
         }
 
         if (opcion.toLowerCase().equals("rol")) {
+            if (!this.userValidate.validateRol(this.emailEmisor, "Administrador")) {
+                smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
+                return;
+            }
             rolController rol = new rolController();
             LinkedList<String> paramsList = rol.createList(parametros);
             switch (opcionArray[0].toLowerCase()) {

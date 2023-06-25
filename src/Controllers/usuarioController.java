@@ -6,16 +6,16 @@ import Models.usuarioModel;
 import Utils.validatorUtils;
 
 public class usuarioController {
-
+    
     private usuarioModel usuario;
     private String respuesta;
     private rolController rol;
-
+    
     public usuarioController() {
         usuario = new usuarioModel();
         rol = new rolController();
     }
-
+    
     public String create(LinkedList<String> params) {
         this.validateCreate(params);
         if (this.respuesta != null) {
@@ -30,7 +30,7 @@ public class usuarioController {
         }
         return respuesta;
     }
-
+    
     public String update(LinkedList<String> params) {
         validateUpdate(params);
         if (this.respuesta != null) {
@@ -45,7 +45,7 @@ public class usuarioController {
         }
         return respuesta;
     }
-
+    
     public String delete(int id) {
         if (!validatorUtils.validateNumber(String.valueOf(id))) {
             return "El id debe ser un numero";
@@ -58,18 +58,22 @@ public class usuarioController {
         }
         return respuesta;
     }
-
+    
     public String getAll(LinkedList<String> params) {
         return usuario.getAll(params);
     }
-
+    
     public boolean auth(String email) {
         if (!validatorUtils.validateEmail(email) || !usuario.emailExist(email)) {
             return false;
         }
         return true;
     }
-
+    
+    public boolean validateRol(String email, String rol) {
+        return usuario.validateRol(email, rol);
+    }
+    
     private void validateCreate(LinkedList<String> params) {
         usuario = new usuarioModel();
         if (params.size() != 5) {
@@ -104,7 +108,7 @@ public class usuarioController {
             this.respuesta = "El ID del rol no existe";
         }
     }
-
+    
     private void validateUpdate(LinkedList<String> params) {
         usuario = new usuarioModel();
         if (params.size() != 6) {
@@ -147,7 +151,7 @@ public class usuarioController {
             this.respuesta = "El ID del rol no existe";
         }
     }
-
+    
     public LinkedList<String> createList(String[] params) {
         LinkedList<String> list = new LinkedList<>();
         for (String param : params) {

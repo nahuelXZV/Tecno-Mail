@@ -76,8 +76,8 @@ public class programaController {
             this.respuesta = "Numero de parametros incorrecto.";
             return;
         }
-        if (!validatorUtils.validateNumber(params.get(0))) {
-            this.respuesta = "El codigo debe ser un numero.";
+        if (!validatorUtils.validateString(params.get(0))) {
+            this.respuesta = "El Codigo debe ser un string y no debe estar vacio.";
             return;
         }
         if (!validatorUtils.validateString(params.get(1))) {
@@ -129,54 +129,53 @@ public class programaController {
             return;
         }
         if (!validatorUtils.validateNumber(params.get(0))) {
-            this.respuesta = "El codigo debe ser un numero.";
+            this.respuesta = "El ID debe ser un numero.";
             return;
         }
         if (!validatorUtils.validateString(params.get(1))) {
+            this.respuesta = "El Codigo debe ser un string y no debe estar vacio.";
+            return;
+        }
+        if (!validatorUtils.validateString(params.get(2))) {
+            this.respuesta = "El Nombre debe ser un string y no debe estar vacio.";
+            return;
+        }
+        if (!validatorUtils.validateString(params.get(3))) {
             this.respuesta = "La sigla debe ser un string y no debe estar vacio.";
             return;
         }
-
-        if (!validatorUtils.validateString(params.get(2))) {
+        if (!validatorUtils.validateString(params.get(4))) {
             this.respuesta = "La edicion debe ser un string y no debe estar vacio.";
             return;
         }
-
-        if (!validatorUtils.validateString(params.get(3))) {
+        if (!validatorUtils.validateString(params.get(5))) {
             this.respuesta = "La version debe ser un string y no debe estar vacio.";
             return;
         }
-
-        if (!validatorUtils.validateString(params.get(4))) {
+        if (!validatorUtils.validateString(params.get(6))) {
             this.respuesta = "La fecha de inicio debe ser un string y no debe estar vacio.";
             return;
         }
-
-        if (!validatorUtils.validateString(params.get(5))) {
+        if (!validatorUtils.validateString(params.get(7))) {
             this.respuesta = "La fecha de finalizacion debe ser un string y no debe estar vacio.";
             return;
         }
-
-        if (!validatorUtils.validateString(params.get(6))) {
+        if (!validatorUtils.validateString(params.get(8))) {
             this.respuesta = "El costo debe ser un string y no debe estar vacio.";
             return;
         }
-
-        if (!validatorUtils.validateString(params.get(7))) {
+        if (!validatorUtils.validateString(params.get(9))) {
             this.respuesta = "El tipo debe ser un string y no debe estar vacio.";
             return;
         }
-
-        if (!validatorUtils.validateString(params.get(8))) {
+        if (!validatorUtils.validateString(params.get(10))) {
             this.respuesta = "La modalidad debe ser un string y no debe estar vacio.";
             return;
         }
-
-        if (!validatorUtils.validateString(params.get(9))) {
+        if (!validatorUtils.validateString(params.get(11))) {
             this.respuesta = "Las horas academicas deben ser un string y no debe estar vacio.";
             return;
         }
-
     }
 
     public LinkedList<String> createList(String[] params) {

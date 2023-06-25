@@ -108,6 +108,20 @@ public class usuarioModel {
         }
     }
 
+    public boolean validateRol(String correo, String rol) {
+        String sql = "SELECT * FROM usuario, rol WHERE rol.id = usuario.rol_id AND usuario.correo = ? AND rol.nombre = ?";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, correo);
+            ps.setString(2, rol);
+            try (ResultSet resultado = ps.executeQuery()) {
+                return resultado.next(); // Devuelve true si hay un registro, false si no
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public String getAll(LinkedList<String> params) {
         String tabla = "";
         Statement consulta;

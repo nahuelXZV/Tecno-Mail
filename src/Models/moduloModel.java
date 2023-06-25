@@ -148,11 +148,12 @@ public class moduloModel {
 
         try {
             String query;
-            if (params.size() == 0)
-                query = "SELECT  modulo.id, modulo.codigo_modulo, modulo.nombre, modulo.sigla, modulo.version, modulo.edicion, modulo.modalidad, modulo.fecha_inicio, modulo.fecha_finalizacion, programa.nombre as programa, docente.nombre as docente FROM modulo, programa, docente WHERE modulo.programa_id = programa.id AND modulo.docente_id = docente.id";
-            else
-                query = "SELECT modulo.id, modulo.codigo_modulo, modulo.nombre, modulo.sigla, modulo.version, modulo.edicion, modulo.modalidad, modulo.fecha_inicio, modulo.fecha_finalizacion, programa.nombre as programa, docente.nombre as docente FROM modulo, programa, docente WHERE modulo.programa_id = programa.id AND modulo.docente_id = docente.id AND "
+            if (params.size() == 0) {
+                query = "SELECT  modulo.id, modulo.codigo_modulo, modulo.nombre, modulo.sigla, modulo.version, modulo.edicion, modulo.modalidad, modulo.fecha_inicio, modulo.fecha_finalizacion, programa.nombre as programa, CONCAT(docente.nombre, ' ', docente.apellido) AS docente FROM modulo, programa, docente WHERE modulo.programa_id = programa.id AND modulo.docente_id = docente.id";
+            } else {
+                query = "SELECT modulo.id, modulo.codigo_modulo, modulo.nombre, modulo.sigla, modulo.version, modulo.edicion, modulo.modalidad, modulo.fecha_inicio, modulo.fecha_finalizacion, programa.nombre as programa, CONCAT(docente.nombre, ' ', docente.apellido) AS docente  FROM modulo, programa, docente WHERE modulo.programa_id = programa.id AND modulo.docente_id = docente.id AND "
                         + params.get(0) + " ILIKE '%" + params.get(1) + "%'";
+            }
 
             Connection con = conexion.connect();
             consulta = con.createStatement();

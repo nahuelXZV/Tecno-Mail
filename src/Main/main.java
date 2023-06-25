@@ -20,11 +20,6 @@ public class main {
         System.out.println("Start");
         popService pop = new popService();
         int cantMails = pop.getCantidadEmails();
-        // try {
-        // pop.getMail();
-        // } catch (Exception e) {
-        // System.out.println("Error al obtener mails");
-        // }
         while (true) {
             int newCantsMails = pop.getCantidadEmails();
             System.out.println("Escuchando EMAILS...");
@@ -41,7 +36,7 @@ public class main {
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException ex) {
-                // Logger.getLogger(Manage.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("Error en el servidor.");
             }
         }
     }
